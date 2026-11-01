@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0",
+  "request_id": "discovery-001",
+  "command": "capabilities",
+  "params": {}
+}

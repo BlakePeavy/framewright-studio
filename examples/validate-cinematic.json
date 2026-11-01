@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "request_id": "cinematic-review-001",
+  "command": "scene.validate",
+  "params": {
+    "profile": "cinematic_8k",
+    "overrides": {"max_triangles": 2000000, "texture_target": 8192}
+  }
+}

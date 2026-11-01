@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "request_id": "build-atlas-review",
+  "command": "workflow.run",
+  "params": {
+    "run_id": "cabinet-atlas-review-001",
+    "dry_run": true,
+    "steps": [
+      {
+        "id": "build",
+        "command": "model.build_prop",
+        "params": {"name": "AtlasWorkflowCabinet"}
+      },
+      {
+        "id": "atlas",
+        "command": "surfaces.bake_material_atlas",
+        "params": {
+          "object_names": {"$ref": "build.result.objects"},
+          "name": "CabinetAtlas",
+          "resolution": 1024,
+          "margin": 8,
+          "max_memory_mb": 1024
+        }
+      },
+      {
+        "id": "review",
+        "command": "lighting.create_review",
+        "params": {
+          "object_names": {"$ref": "atlas.result.objects"},
+          "lighting": "neutral",
+          "resolution": 1024
+        }
+      }
+    ]
+  }
+}

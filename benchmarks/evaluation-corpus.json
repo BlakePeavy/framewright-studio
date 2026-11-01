@@ -1,0 +1,223 @@
+{
+  "schema_version": "1.0",
+  "corpus_id": "structural-v1",
+  "artist_approval": "not_evaluated",
+  "fixtures": [
+    {
+      "id": "healthy_prop",
+      "scene": {
+        "name": "healthy_prop",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 8,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1
+          }
+        ]
+      },
+      "profile": "studio_static",
+      "expected_rule_ids": [],
+      "expected_passed": true,
+      "expected_error_count": 0
+    },
+    {
+      "id": "collapsed_faces",
+      "scene": {
+        "name": "collapsed_faces",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 8,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1,
+            "degenerate_faces": 2
+          }
+        ]
+      },
+      "profile": "studio_static",
+      "expected_rule_ids": [
+        "DEGENERATE_FACES"
+      ],
+      "expected_passed": false,
+      "expected_error_count": 1
+    },
+    {
+      "id": "unweighted_skin",
+      "scene": {
+        "name": "unweighted_skin",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 8,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1,
+            "modifier_types": [
+              "ARMATURE"
+            ],
+            "armature_target": "Rig",
+            "unweighted_vertices": 3,
+            "max_vertex_influences": 4
+          },
+          {
+            "name": "Rig",
+            "type": "ARMATURE",
+            "bone_count": 2,
+            "root_bone_count": 1
+          }
+        ]
+      },
+      "profile": "studio_static",
+      "expected_rule_ids": [
+        "UNWEIGHTED_VERTICES"
+      ],
+      "expected_passed": false,
+      "expected_error_count": 1
+    },
+    {
+      "id": "invalid_frame_rate",
+      "scene": {
+        "name": "invalid_frame_rate",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 8,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1
+          }
+        ],
+        "fps": 0
+      },
+      "profile": "studio_static",
+      "expected_rule_ids": [
+        "FRAME_RATE"
+      ],
+      "expected_passed": false,
+      "expected_error_count": 1
+    },
+    {
+      "id": "missing_review_lighting",
+      "scene": {
+        "name": "missing_review_lighting",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 8,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1
+          }
+        ]
+      },
+      "profile": "lookdev_scene",
+      "expected_rule_ids": [
+        "MISSING_CAMERA",
+        "MISSING_LIGHTING"
+      ],
+      "expected_passed": true,
+      "expected_error_count": 0
+    },
+    {
+      "id": "low_source_texture",
+      "scene": {
+        "name": "low_source_texture",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 8,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1
+          }
+        ],
+        "camera_name": "Camera",
+        "world_present": true,
+        "textures": [
+          {
+            "name": "SourceAlbedo",
+            "width": 1024,
+            "height": 1024
+          }
+        ]
+      },
+      "profile": "cinematic_8k",
+      "expected_rule_ids": [
+        "TEXTURE_BELOW_TARGET"
+      ],
+      "expected_passed": true,
+      "expected_error_count": 0
+    },
+    {
+      "id": "intentional_open_surface",
+      "scene": {
+        "name": "intentional_open_surface",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 8,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1,
+            "nonmanifold_edges": 4
+          }
+        ]
+      },
+      "profile": "studio_static",
+      "expected_rule_ids": [
+        "NONMANIFOLD_EDGES"
+      ],
+      "expected_passed": true,
+      "expected_error_count": 0
+    },
+    {
+      "id": "loose_vertices",
+      "scene": {
+        "name": "loose_vertices",
+        "objects": [
+          {
+            "name": "Prop",
+            "type": "MESH",
+            "vertex_count": 10,
+            "edge_count": 12,
+            "polygon_count": 6,
+            "triangle_count": 12,
+            "uv_layer_count": 1,
+            "material_slot_count": 1,
+            "loose_vertices": 2
+          }
+        ]
+      },
+      "profile": "studio_static",
+      "expected_rule_ids": [
+        "LOOSE_VERTICES"
+      ],
+      "expected_passed": true,
+      "expected_error_count": 0
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "quality_direction": "Photoreal AAA source detail with configurable cinematic and real-time outputs",
+  "artist_accepted": false,
+  "reference_policy": "Sundown WIP art is excluded as the quality authority. Technical fixtures do not establish artistic acceptance.",
+  "candidates": [
+    {
+      "id": "blender-studio-human-base-1.4.1",
+      "role": "anatomy_and_topology_reference",
+      "publisher": "Blender Studio and community contributors",
+      "source_page": "https://www.blender.org/download/demo-files/",
+      "download": "https://mirror.blender.org/demo/asset-bundles/human-base-meshes/human-base-meshes-bundle-v1.4.1.zip",
+      "license": "CC0-1.0",
+      "size_bytes": 50643039,
+      "sha256": "811f43accbb31a88266d932f8f5563b2d13586fca0ba2693aad1f5fe582b3515",
+      "local_file": "artifacts/reference-candidates/human-base-meshes-v1.4.1.zip",
+      "role_limit": "Authored base anatomy/topology reference, not a finished textured character or AAA quality certification",
+      "status": "downloaded_hash_verified_not_visually_accepted"
+    },
+    {
+      "id": "poly-haven-wooden-planks-8k",
+      "role": "pbr_surface_reference",
+      "source_page": "https://polyhaven.com/a/wooden_planks",
+      "license": "CC0-1.0 for assets; website renders are separately protected",
+      "status": "downloaded_hash_verified_not_visually_accepted",
+      "credit": "Powered by Poly Haven",
+      "local_receipt": "artifacts/reference-candidates/wooden_planks-8k/download-receipt.json",
+      "files": [
+        {
+          "role": "base_color",
+          "bytes": 23421939,
+          "sha256": "edfecc247ff741c51141ff7b126ccc02abdc342792e35d2892fbddee3bf2305f"
+        },
+        {
+          "role": "normal",
+          "bytes": 144048102,
+          "sha256": "788a078954b5d224576b20ff8ab65f6e25f2a83e59de5c3f56d7b8fe926ef826"
+        },
+        {
+          "role": "roughness",
+          "bytes": 134046662,
+          "sha256": "3858316feff10ae31f6e12d29623b65fd5b91f5e1f1553bda33383b0f070c6bf"
+        }
+      ]
+    },
+    {
+      "id": "poly-haven-painted-wooden-cabinet-4k",
+      "role": "authored_prop_construction_and_surface_reference",
+      "source_page": "https://polyhaven.com/a/painted_wooden_cabinet",
+      "author": "Kirill Sannikov",
+      "license": "CC0-1.0",
+      "credit": "Powered by Poly Haven",
+      "status": "downloaded_hash_verified_rendered_provisional_reference",
+      "local_receipt": "artifacts/reference-candidates/painted_wooden_cabinet-4k/download-receipt.json",
+      "source_blend_sha256": "0db52d5cfede78a38aed7316109aad213a63396504326e06a24e4c72b85abc8e",
+      "source_maps": "Original 4096-square JPEG color plus three HALF DWAA EXR data maps; no upsampling",
+      "role_limit": "External authored five-part prop reference, not generated Framewright art or a universal AAA standard",
+      "pilot": "artifacts/cabinet-reference-pilot/20261030T183952Z-ece878b6/report.json"
+    }
+  ],
+  "rubric": [
+    {
+      "gate": "reference_fidelity",
+      "evidence": "Matched views and actual camera coverage; silhouette, construction, anatomy and scale"
+    },
+    {
+      "gate": "surfaces",
+      "evidence": "Texel density and UV review, correct PBR data encodings, material separation under neutral light"
+    },
+    {
+      "gate": "deformation",
+      "evidence": "Whole intended range and protected regions for face, hands, joints, costume and accessories"
+    },
+    {
+      "gate": "motion",
+      "evidence": "Full clips with contact, root motion, timing and exported native playback"
+    },
+    {
+      "gate": "lighting",
+      "evidence": "Calibrated color/exposure, neutral/day/dusk, composition and temporal stability"
+    },
+    {
+      "gate": "handoff",
+      "evidence": "Cold reimport geometry/material/rig/animation parity; native engine identity and placement"
+    },
+    {
+      "gate": "performance",
+      "evidence": "Pinned hardware/build/resolution; measured CPU/GPU/memory/streaming and LOD transitions"
+    }
+  ]
+}

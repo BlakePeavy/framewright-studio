@@ -1,0 +1,1143 @@
+{
+  "schema_version": "1.0",
+  "corpus_id": "framewright-production-technical",
+  "corpus_version": 1,
+  "fixtures": [
+    {
+      "id": "cabinet-reference-pbr",
+      "version": 1,
+      "source": {
+        "path": "artifacts/cabinet-reference-pilot/20261030T185917Z-db62bd9f/editable-reference-and-recipe.blend",
+        "bytes": 185534,
+        "sha256": "d914de2c5b5150b8d811416f411289293f8c66d65da4edb153be257cf9fe1764"
+      },
+      "dependencies": [
+        {
+          "path": "artifacts/reference-candidates/painted_wooden_cabinet-4k/painted_wooden_cabinet_4k.blend",
+          "bytes": 168349,
+          "sha256": "0db52d5cfede78a38aed7316109aad213a63396504326e06a24e4c72b85abc8e"
+        },
+        {
+          "path": "artifacts/reference-candidates/painted_wooden_cabinet-4k/textures/painted_wooden_cabinet_diff_4k.jpg",
+          "bytes": 10388113,
+          "sha256": "730e6e287df5901e9ca36639edeba2d6e77939514fa3a2fb4c13812eec735135"
+        },
+        {
+          "path": "artifacts/reference-candidates/painted_wooden_cabinet-4k/textures/painted_wooden_cabinet_rough_4k.exr",
+          "bytes": 7127177,
+          "sha256": "9b01025f1ccdfc88d178688d12599e6a50d1b0b029a42a188b5de31ca34cd85a"
+        },
+        {
+          "path": "artifacts/reference-candidates/painted_wooden_cabinet-4k/textures/painted_wooden_cabinet_metal_4k.exr",
+          "bytes": 677044,
+          "sha256": "5898aa9361577ad4d9cf1b99ccff8d14ecf006f94ed3487b2d7f19eb9b4d2d07"
+        },
+        {
+          "path": "artifacts/reference-candidates/painted_wooden_cabinet-4k/textures/painted_wooden_cabinet_nor_gl_4k.exr",
+          "bytes": 14443502,
+          "sha256": "d25d7e8880b96ef45c7517549414fcc9ccbfdc79fb9cd32f481364773a97d533"
+        }
+      ],
+      "receipts": [
+        {
+          "path": "artifacts/cabinet-reference-pilot/20261030T185917Z-db62bd9f/report.json",
+          "bytes": 16601,
+          "sha256": "709014fc163d0a06be9fef01f4b04e4201ac538560bd6a414d4d52545460393f"
+        },
+        {
+          "path": "artifacts/cabinet-reference-pilot/20261030T185917Z-db62bd9f/cold-verification.json",
+          "bytes": 227,
+          "sha256": "0b0422a9217147aadb5c0de138c23d01a3e123f53679a107c3ad573a1fb2e283"
+        }
+      ],
+      "scene": "Cabinet_recipe",
+      "objects": [
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_01_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_02_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_01_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_02_FW_Material"
+      ],
+      "scene_objects": [
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_01_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_02_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_01_FW_Material",
+        "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_02_FW_Material",
+        "Cabinet_recipe_Fill",
+        "Cabinet_recipe_Floor",
+        "Cabinet_recipe_Key",
+        "Cabinet_recipe_Rim",
+        "Cabinet_recipe_back",
+        "Cabinet_recipe_front",
+        "Cabinet_recipe_side",
+        "Cabinet_recipe_three_quarter"
+      ],
+      "operations": [
+        {
+          "id": "resources",
+          "requests": [
+            {
+              "command": "scene.resources",
+              "params": {}
+            }
+          ],
+          "expectations": [
+            {
+              "path": "/responses/0/result/objects",
+              "op": "eq",
+              "value": 13
+            },
+            {
+              "path": "/responses/0/result/mesh_objects",
+              "op": "eq",
+              "value": 6
+            },
+            {
+              "path": "/responses/0/result/source_triangles_unique",
+              "op": "eq",
+              "value": 2239
+            },
+            {
+              "path": "/responses/0/result/evaluated_triangles_with_instances",
+              "op": "eq",
+              "value": 2415
+            },
+            {
+              "path": "/responses/0/result/textures",
+              "op": "eq",
+              "value": 4
+            },
+            {
+              "path": "/responses/0/result/unique_materials",
+              "op": "eq",
+              "value": 2
+            },
+            {
+              "path": "/responses/0/result/texture_decoded_bytes_estimate",
+              "op": "eq",
+              "value": 872415232
+            },
+            {
+              "path": "/responses/0/result/instance_occurrences",
+              "op": "eq",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "id": "mesh-diagnostics",
+          "requests": [
+            {
+              "command": "mesh.inspect_evaluated",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_FW_Material"
+              }
+            },
+            {
+              "command": "mesh.inspect_evaluated",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_01_FW_Material"
+              }
+            },
+            {
+              "command": "mesh.inspect_evaluated",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_02_FW_Material"
+              }
+            },
+            {
+              "command": "mesh.inspect_evaluated",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_01_FW_Material"
+              }
+            },
+            {
+              "command": "mesh.inspect_evaluated",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_02_FW_Material"
+              }
+            }
+          ],
+          "expectations": [
+            {
+              "path": "/responses/0/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/0/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 17,
+                  "message": "Boundary edges need an explicit open-surface policy",
+                  "rule_id": "OPEN_BOUNDARY",
+                  "samples": [],
+                  "severity": "WARNING"
+                },
+                {
+                  "count": 1,
+                  "message": "Analysis budget omitted triangles or candidate pairs; absence of findings is not a clean result",
+                  "rule_id": "PARTIAL_INTERSECTION_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/0/result/topology",
+              "op": "eq",
+              "value": {
+                "boundary_edges": 17,
+                "branching_edges": 0,
+                "duplicate_faces": 0,
+                "edges": 1247,
+                "faces": 692,
+                "triangles": 1093,
+                "vertices": 565,
+                "wire_edges": 0,
+                "zero_area_faces": 0
+              }
+            },
+            {
+              "path": "/responses/1/result/coverage",
+              "op": "eq",
+              "value": "complete"
+            },
+            {
+              "path": "/responses/1/result/findings",
+              "op": "eq",
+              "value": []
+            },
+            {
+              "path": "/responses/1/result/topology",
+              "op": "eq",
+              "value": {
+                "boundary_edges": 0,
+                "branching_edges": 0,
+                "duplicate_faces": 0,
+                "edges": 91,
+                "faces": 51,
+                "triangles": 80,
+                "vertices": 40,
+                "wire_edges": 0,
+                "zero_area_faces": 0
+              }
+            },
+            {
+              "path": "/responses/2/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/2/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 24,
+                  "message": "Boundary edges need an explicit open-surface policy",
+                  "rule_id": "OPEN_BOUNDARY",
+                  "samples": [],
+                  "severity": "WARNING"
+                },
+                {
+                  "count": 50,
+                  "message": "Nonadjacent triangles overlap or meet along a segment; inspect the sampled pairs",
+                  "rule_id": "SELF_INTERSECTION",
+                  "samples": [
+                    [
+                      12,
+                      48
+                    ],
+                    [
+                      12,
+                      49
+                    ],
+                    [
+                      12,
+                      50
+                    ],
+                    [
+                      12,
+                      54
+                    ],
+                    [
+                      12,
+                      55
+                    ],
+                    [
+                      12,
+                      56
+                    ],
+                    [
+                      12,
+                      57
+                    ],
+                    [
+                      12,
+                      60
+                    ],
+                    [
+                      12,
+                      61
+                    ],
+                    [
+                      12,
+                      64
+                    ],
+                    [
+                      12,
+                      65
+                    ],
+                    [
+                      12,
+                      68
+                    ],
+                    [
+                      12,
+                      69
+                    ],
+                    [
+                      12,
+                      72
+                    ],
+                    [
+                      12,
+                      73
+                    ],
+                    [
+                      12,
+                      78
+                    ],
+                    [
+                      12,
+                      79
+                    ],
+                    [
+                      12,
+                      84
+                    ],
+                    [
+                      12,
+                      85
+                    ],
+                    [
+                      12,
+                      90
+                    ],
+                    [
+                      12,
+                      91
+                    ],
+                    [
+                      13,
+                      44
+                    ],
+                    [
+                      13,
+                      45
+                    ],
+                    [
+                      13,
+                      46
+                    ],
+                    [
+                      13,
+                      47
+                    ],
+                    [
+                      13,
+                      50
+                    ],
+                    [
+                      13,
+                      51
+                    ],
+                    [
+                      13,
+                      52
+                    ],
+                    [
+                      13,
+                      53
+                    ],
+                    [
+                      13,
+                      58
+                    ],
+                    [
+                      13,
+                      59
+                    ],
+                    [
+                      13,
+                      62
+                    ],
+                    [
+                      13,
+                      63
+                    ],
+                    [
+                      13,
+                      66
+                    ],
+                    [
+                      13,
+                      67
+                    ],
+                    [
+                      13,
+                      68
+                    ],
+                    [
+                      13,
+                      70
+                    ],
+                    [
+                      13,
+                      71
+                    ],
+                    [
+                      13,
+                      74
+                    ],
+                    [
+                      13,
+                      75
+                    ],
+                    [
+                      13,
+                      76
+                    ],
+                    [
+                      13,
+                      77
+                    ],
+                    [
+                      13,
+                      80
+                    ],
+                    [
+                      13,
+                      81
+                    ],
+                    [
+                      13,
+                      82
+                    ],
+                    [
+                      13,
+                      83
+                    ],
+                    [
+                      13,
+                      86
+                    ],
+                    [
+                      13,
+                      87
+                    ],
+                    [
+                      13,
+                      88
+                    ],
+                    [
+                      13,
+                      89
+                    ]
+                  ],
+                  "severity": "WARNING"
+                },
+                {
+                  "count": 1,
+                  "message": "Analysis budget omitted triangles or candidate pairs; absence of findings is not a clean result",
+                  "rule_id": "PARTIAL_INTERSECTION_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/2/result/topology",
+              "op": "eq",
+              "value": {
+                "boundary_edges": 24,
+                "branching_edges": 0,
+                "duplicate_faces": 0,
+                "edges": 440,
+                "faces": 226,
+                "triangles": 404,
+                "vertices": 217,
+                "wire_edges": 0,
+                "zero_area_faces": 0
+              }
+            },
+            {
+              "path": "/responses/3/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/3/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 41,
+                  "message": "Boundary edges need an explicit open-surface policy",
+                  "rule_id": "OPEN_BOUNDARY",
+                  "samples": [],
+                  "severity": "WARNING"
+                },
+                {
+                  "count": 3,
+                  "message": "Nonadjacent triangles overlap or meet along a segment; inspect the sampled pairs",
+                  "rule_id": "SELF_INTERSECTION",
+                  "samples": [
+                    [
+                      35,
+                      82
+                    ],
+                    [
+                      35,
+                      83
+                    ],
+                    [
+                      35,
+                      84
+                    ]
+                  ],
+                  "severity": "WARNING"
+                },
+                {
+                  "count": 1,
+                  "message": "Analysis budget omitted triangles or candidate pairs; absence of findings is not a clean result",
+                  "rule_id": "PARTIAL_INTERSECTION_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/3/result/topology",
+              "op": "eq",
+              "value": {
+                "boundary_edges": 41,
+                "branching_edges": 0,
+                "duplicate_faces": 0,
+                "edges": 366,
+                "faces": 183,
+                "triangles": 325,
+                "vertices": 185,
+                "wire_edges": 0,
+                "zero_area_faces": 0
+              }
+            },
+            {
+              "path": "/responses/4/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/4/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 41,
+                  "message": "Boundary edges need an explicit open-surface policy",
+                  "rule_id": "OPEN_BOUNDARY",
+                  "samples": [],
+                  "severity": "WARNING"
+                },
+                {
+                  "count": 3,
+                  "message": "Nonadjacent triangles overlap or meet along a segment; inspect the sampled pairs",
+                  "rule_id": "SELF_INTERSECTION",
+                  "samples": [
+                    [
+                      25,
+                      72
+                    ],
+                    [
+                      25,
+                      73
+                    ],
+                    [
+                      25,
+                      74
+                    ]
+                  ],
+                  "severity": "WARNING"
+                },
+                {
+                  "count": 1,
+                  "message": "Analysis budget omitted triangles or candidate pairs; absence of findings is not a clean result",
+                  "rule_id": "PARTIAL_INTERSECTION_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/4/result/topology",
+              "op": "eq",
+              "value": {
+                "boundary_edges": 41,
+                "branching_edges": 0,
+                "duplicate_faces": 0,
+                "edges": 366,
+                "faces": 183,
+                "triangles": 325,
+                "vertices": 185,
+                "wire_edges": 0,
+                "zero_area_faces": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "surface-diagnostics",
+          "requests": [
+            {
+              "command": "surfaces.inspect",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_FW_Material"
+              }
+            },
+            {
+              "command": "surfaces.inspect",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_01_FW_Material"
+              }
+            },
+            {
+              "command": "surfaces.inspect",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_door_02_FW_Material"
+              }
+            },
+            {
+              "command": "surfaces.inspect",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_01_FW_Material"
+              }
+            },
+            {
+              "command": "surfaces.inspect",
+              "params": {
+                "max_pairs": 2000,
+                "max_triangles": 512,
+                "object_name": "Cabinet_recipe_FW_Reference_painted_wooden_cabinet_drawer_02_FW_Material"
+              }
+            }
+          ],
+          "expectations": [
+            {
+              "path": "/responses/0/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/0/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 1,
+                  "message": "UV triangle or pair limits omitted coverage; absent overlaps do not establish a clean unwrap",
+                  "rule_id": "PARTIAL_UV_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/0/result/uv/layer",
+              "op": "eq",
+              "value": "UVMap"
+            },
+            {
+              "path": "/responses/0/result/texel_density/materials/0/image_dimensions",
+              "op": "eq",
+              "value": [
+                4096,
+                4096
+              ]
+            },
+            {
+              "path": "/responses/1/result/coverage",
+              "op": "eq",
+              "value": "complete"
+            },
+            {
+              "path": "/responses/1/result/findings",
+              "op": "eq",
+              "value": []
+            },
+            {
+              "path": "/responses/1/result/uv/layer",
+              "op": "eq",
+              "value": "UVMap"
+            },
+            {
+              "path": "/responses/1/result/texel_density/materials/0/image_dimensions",
+              "op": "eq",
+              "value": [
+                4096,
+                4096
+              ]
+            },
+            {
+              "path": "/responses/2/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/2/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 1,
+                  "message": "UV triangle or pair limits omitted coverage; absent overlaps do not establish a clean unwrap",
+                  "rule_id": "PARTIAL_UV_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/2/result/uv/layer",
+              "op": "eq",
+              "value": "UVMap"
+            },
+            {
+              "path": "/responses/2/result/texel_density/materials/0/image_dimensions",
+              "op": "eq",
+              "value": [
+                4096,
+                4096
+              ]
+            },
+            {
+              "path": "/responses/3/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/3/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 1,
+                  "message": "UV triangle or pair limits omitted coverage; absent overlaps do not establish a clean unwrap",
+                  "rule_id": "PARTIAL_UV_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/3/result/uv/layer",
+              "op": "eq",
+              "value": "UVMap"
+            },
+            {
+              "path": "/responses/3/result/texel_density/materials/0/image_dimensions",
+              "op": "eq",
+              "value": [
+                4096,
+                4096
+              ]
+            },
+            {
+              "path": "/responses/4/result/coverage",
+              "op": "eq",
+              "value": "partial"
+            },
+            {
+              "path": "/responses/4/result/findings",
+              "op": "eq",
+              "value": [
+                {
+                  "count": 1,
+                  "message": "UV triangle or pair limits omitted coverage; absent overlaps do not establish a clean unwrap",
+                  "rule_id": "PARTIAL_UV_CHECK",
+                  "samples": [],
+                  "severity": "INFO"
+                }
+              ]
+            },
+            {
+              "path": "/responses/4/result/uv/layer",
+              "op": "eq",
+              "value": "UVMap"
+            },
+            {
+              "path": "/responses/4/result/texel_density/materials/0/image_dimensions",
+              "op": "eq",
+              "value": [
+                4096,
+                4096
+              ]
+            }
+          ],
+          "control": {
+            "kind": "remove_uvs",
+            "request_index": 0,
+            "expectations": [
+              {
+                "path": "/ok",
+                "op": "eq",
+                "value": true
+              },
+              {
+                "path": "/result/findings",
+                "op": "rule",
+                "value": "UV_MISSING"
+              }
+            ]
+          }
+        }
+      ],
+      "provenance": {
+        "source_url": "https://polyhaven.com/a/painted_wooden_cabinet",
+        "license_claim": "CC0-1.0",
+        "credit": "Powered by Poly Haven",
+        "asset_authorship": "external_authored_reference_with_owned_recipe_copies",
+        "artist_accepted": false,
+        "native_verified": false
+      }
+    },
+    {
+      "id": "human-evaluated-sole-contacts",
+      "version": 2,
+      "source": {
+        "path": "artifacts/human-contact-pilot/20261030T190254Z-94a0cdfa/authored-human-contact.blend",
+        "bytes": 240121564,
+        "sha256": "c51fc18e3216d3ab92dd3be15651cadfcc6612702b9d34d66a4f63d0d9e3e577"
+      },
+      "dependencies": [],
+      "receipts": [
+        {
+          "path": "artifacts/human-contact-pilot/20261030T190254Z-94a0cdfa/receipt.json",
+          "bytes": 513,
+          "sha256": "3190fe8fd1a44ee0c8ac35e940bf765bbad4e4b272fbd1986c797bc7c31ceee6"
+        },
+        {
+          "path": "artifacts/human-contact-pilot/20261030T190254Z-94a0cdfa/cold-verification.json",
+          "bytes": 117,
+          "sha256": "40a9630dba80a5ef45dda423e70b1475ac70c9c9cfcf3fed92173ddb0ae9384f"
+        },
+        {
+          "path": "artifacts/human-contact-pilot/20261030T190254Z-94a0cdfa/contact-request.json",
+          "bytes": 2057,
+          "sha256": "6965ba1e941dff542483e7514d0012ff4c8896c40b239bffe1421ede7d1fd82f"
+        },
+        {
+          "path": "artifacts/human-contact-pilot/20261030T190254Z-94a0cdfa/contact-report.json",
+          "bytes": 860060,
+          "sha256": "4ab64e435f6e43fcb18f57ed3f69b93b2462f9dfd256b7d8a206be20dcb38873"
+        },
+        {
+          "path": "artifacts/human-contact-pilot/20261030T190254Z-94a0cdfa/negative-controls.json",
+          "bytes": 573,
+          "sha256": "ee9565b37d4d0e4b9142385bf4d6272dd305a7c51928a777913f75bb7694facd"
+        }
+      ],
+      "scene": "FW_HumanContact_Pilot",
+      "objects": [
+        "FW_ContactGround",
+        "FW_HumanContact_Rig",
+        "FW_HumanContact_Skin"
+      ],
+      "scene_objects": [
+        "FW_ContactCamera",
+        "FW_ContactFill",
+        "FW_ContactGround",
+        "FW_ContactKey",
+        "FW_ContactProp",
+        "FW_ContactRim",
+        "FW_HumanContact_Rig",
+        "FW_HumanContact_Skin",
+        "FW_Marker_L_ball_inner",
+        "FW_Marker_L_ball_outer",
+        "FW_Marker_L_heel_inner",
+        "FW_Marker_L_heel_outer",
+        "FW_Marker_L_toe",
+        "FW_Marker_R_ball_inner",
+        "FW_Marker_R_ball_outer",
+        "FW_Marker_R_heel_inner",
+        "FW_Marker_R_heel_outer",
+        "FW_Marker_R_toe",
+        "FW_PropContactTable"
+      ],
+      "operations": [
+        {
+          "id": "resources",
+          "requests": [
+            {
+              "command": "scene.resources",
+              "params": {}
+            }
+          ],
+          "expectations": [
+            {
+              "path": "/responses/0/result/objects",
+              "op": "eq",
+              "value": 19
+            },
+            {
+              "path": "/responses/0/result/mesh_objects",
+              "op": "eq",
+              "value": 14
+            },
+            {
+              "path": "/responses/0/result/source_triangles_unique",
+              "op": "eq",
+              "value": 22856
+            },
+            {
+              "path": "/responses/0/result/evaluated_triangles_with_instances",
+              "op": "eq",
+              "value": 22856
+            },
+            {
+              "path": "/responses/0/result/textures",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "path": "/responses/0/result/unique_materials",
+              "op": "eq",
+              "value": 6
+            },
+            {
+              "path": "/responses/0/result/texture_decoded_bytes_estimate",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "path": "/responses/0/result/instance_occurrences",
+              "op": "eq",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "id": "skin-contacts",
+          "requests": [
+            {
+              "command": "animation.skin_contacts",
+              "params": {
+                "contact_tolerance": 0.012,
+                "frame_end": 61,
+                "frame_start": 1,
+                "markers": [
+                  {
+                    "id": "L_heel_inner",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      5989
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "L_heel_outer",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      6198
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "L_ball_inner",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      6219
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "L_ball_outer",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      6017
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "L_toe",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      5672
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "R_heel_inner",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      856
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "R_heel_outer",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      1065
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "R_ball_inner",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      1086
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "R_ball_outer",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      884
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  },
+                  {
+                    "id": "R_toe",
+                    "object_name": "FW_HumanContact_Skin",
+                    "vertex_indices": [
+                      539
+                    ],
+                    "weights": [
+                      1
+                    ]
+                  }
+                ],
+                "max_samples": 121,
+                "penetration_tolerance": 0.005,
+                "search_distance": 0.5,
+                "sliding_speed": 0.03,
+                "substeps": 2,
+                "surface_name": "FW_ContactGround"
+              }
+            }
+          ],
+          "expectations": [
+            {
+              "path": "/responses/0/result/contact_samples",
+              "op": "eq",
+              "value": 871
+            },
+            {
+              "path": "/responses/0/result/penetration_samples",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "path": "/responses/0/result/sliding_segments",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "path": "/responses/0/result/projection_misses",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "path": "/responses/0/result/sampled_geometry_work_elements",
+              "op": "eq",
+              "value": 19208992
+            },
+            {
+              "path": "/responses/0/result/scene_unit_scale",
+              "op": "eq",
+              "value": 1.0
+            },
+            {
+              "path": "/responses/0/result/effective_fps",
+              "op": "eq",
+              "value": 24.0
+            },
+            {
+              "path": "/responses/0/result/marker_meshes",
+              "op": "eq",
+              "value": [
+                {
+                  "evaluated_triangles": 21160,
+                  "evaluated_vertices": 10582,
+                  "object_name": "FW_HumanContact_Skin",
+                  "topology_sha256": "09bf4fad2920cc2581a2c12f74470ec457520446d55812a5bbfc4bed662115e4"
+                }
+              ]
+            },
+            {
+              "path": "/responses/0/result/samples",
+              "op": "len",
+              "value": 121
+            }
+          ],
+          "control": {
+            "kind": "raised_surface",
+            "request_index": 0,
+            "expectations": [
+              {
+                "path": "/ok",
+                "op": "eq",
+                "value": true
+              },
+              {
+                "path": "/result/penetration_samples",
+                "op": "eq",
+                "value": 902
+              }
+            ]
+          }
+        }
+      ],
+      "provenance": {
+        "asset_authorship": "owned_provisional_rig_skin_and_authored_contact_clip_from_CC0_reference",
+        "artist_accepted": false,
+        "native_verified": false,
+        "limits": "not full-body/continuous collision, final motion, or anatomy acceptance"
+      }
+    }
+  ]
+}

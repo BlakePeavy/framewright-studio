@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "request_id": "build-check-review",
+  "command": "workflow.run",
+  "params": {
+    "run_id": "cabinet-review-001",
+    "dry_run": true,
+    "steps": [
+      {"id": "build", "command": "model.build_prop", "params": {"name": "ReviewCabinet"}},
+      {
+        "id": "check", "command": "scene.validate",
+        "params": {"profile": "studio_static"},
+        "require": [{"path": "result.passed", "equals": true}]
+      },
+      {
+        "id": "review", "command": "lighting.create_review",
+        "params": {"collection_name": {"$ref": "build.result.collection"}, "lighting": "neutral", "resolution": 1024}
+      }
+    ]
+  }
+}

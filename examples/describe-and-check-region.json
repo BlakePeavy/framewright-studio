@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "request_id": "authored-region-review",
+  "command": "workflow.run",
+  "params": {
+    "run_id": "authored-region-review",
+    "dry_run": true,
+    "steps": [
+      {
+        "id": "describe",
+        "command": "contacts.describe_region",
+        "params": {
+          "object_name": "Skin",
+          "region_id": "left-sole",
+          "sample_time": 1,
+          "vertex_group": "AuthoredSole.L"
+        }
+      },
+      {
+        "id": "inspect",
+        "command": "contacts.inspect_regions",
+        "params": {
+          "surface_name": "Ground",
+          "regions": [{"$ref": "describe.result.region"}],
+          "frame_start": 1,
+          "frame_end": 3,
+          "substeps": 2,
+          "max_samples": 5,
+          "max_examples": 8
+        }
+      }
+    ]
+  }
+}

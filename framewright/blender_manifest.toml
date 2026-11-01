@@ -1,0 +1,18 @@
+schema_version = "1.0.0"
+id = "framewright_studio"
+version = "0.8.0"
+name = "Framewright Studio"
+tagline = "AI-friendly modeling, rigging, animation and scene workflows"
+maintainer = "Framewright Studio contributors"
+type = "add-on"
+tags = ["Modeling", "Animation", "Pipeline"]
+blender_version_min = "5.2.1"
+blender_version_max = "5.3.0"
+license = ["SPDX:GPL-3.0-or-later"]
+
+[permissions]
+files = "Read references; save new reports, exports and job derivatives"
+
+[build]
+paths_exclude_pattern = ["__pycache__/", "*.pyc", "*.zip"]
+

@@ -1,0 +1,38 @@
+[project]
+name = "framewright-studio"
+version = "0.8.0"
+description = "AI-friendly Blender production checks and source-preserving workflows"
+requires-python = ">=3.11"
+license = "GPL-3.0-or-later"
+
+[dependency-groups]
+dev = ["pytest>=8.4,<10", "pytest-cov>=6,<8", "ruff>=0.14,<1"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+exclude = ["dist", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"framewright/ui.py" = ["F722", "F821"]
+"framewright/ui_tools.py" = ["F722", "F821"]
+
+[tool.coverage.run]
+source = ["framewright"]
+omit = ["framewright/ui.py", "framewright/blender_adapter.py"]
+
+[tool.coverage.report]
+show_missing = true
+

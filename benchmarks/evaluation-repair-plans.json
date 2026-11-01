@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "plans": {
+    "repair": {
+      "run_id": "evaluation-loose-repair",
+      "dry_run": false,
+      "steps": [
+        {
+          "id": "plan",
+          "command": "repair.plan_remove_loose",
+          "params": {
+            "object_name": "EvaluationSource"
+          }
+        },
+        {
+          "id": "apply",
+          "command": "repair.apply_plan",
+          "params": {
+            "plan_token": {
+              "$ref": "plan.result.plan_token"
+            },
+            "source_fingerprint": {
+              "$ref": "plan.result.source_fingerprint"
+            },
+            "dry_run": false
+          }
+        }
+      ]
+    },
+    "inspect": {
+      "run_id": "evaluation-loose-inspect",
+      "dry_run": false,
+      "steps": [
+        {
+          "id": "inspect",
+          "command": "scene.inspect",
+          "params": {}
+        }
+      ]
+    }
+  }
+}

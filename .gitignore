@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+coverage.xml
+dist/
+artifacts/
+*.blend
+*.blend1
+*.blend2
+.env
+.env.*
+

@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0",
+  "request_id": "prop-repair-preview-001",
+  "command": "mesh.remove_loose_vertices",
+  "params": {"object_name": "Prop", "dry_run": true}
+}
