@@ -11,7 +11,8 @@ also passed all 812 tests. This increment adds shared PBR material-atlas baking,
 preserves cold hidden-object review transforms and corrects exported atlas UV selection.
 Actual 1024 and 8192 cabinet atlases pass cold Blender/GLB/FBX renders and map audits.
 The 8K worker takes about 20 minutes and peaks at 16.39 GiB working memory.
-The native import adapter has passing offline contracts; execution in Unreal remains open.
+A separate repaired adapter passes isolated Unreal 5.8.3 import/settings checks;
+cold reload is in progress. The release runtime has not received those fixes.
 Technical checks do not grant artistic or native-engine acceptance.
 See [verification](docs/verification.md) for package/source checkpoint hashes, evidence and limits.
 
@@ -58,8 +59,9 @@ standard library and Blender-bundled modules. Generated assets and evidence rema
 ignored `artifacts/`, outside the install ZIP.
 Use focused tests while developing; run the full command above at major milestones
 or releases. The standalone development target is one latest-stable Python (3.15.2);
-there is no host-version matrix. Its migration check is pending the current checkpoint;
-historical receipts remain unchanged. Blender/Unreal checks use their bundled runtimes.
+there is no host-version matrix. Python 3.15.2 passes all 830 current candidate
+cases across the initial run and five focused environment rechecks; no full rerun.
+Use uv 0.13.6 or newer for its managed download. Blender/Unreal checks use their bundled runtimes.
 Do not replace an environment while an owned worker is using it.
 
 Install a **verified** ZIP through Blender Preferences → Get Extensions → Install from
