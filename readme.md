@@ -1,82 +1,70 @@
 # Framewright Studio
 
-AI-friendly Blender production tools targeting independently reviewed AAA quality,
-with flexible cinematic/8K and real-time budgets. Sundown Run is an eventual integration
-destination; its unfinished art does not define the benchmark.
+AI-friendly **Blender plug-in** for modeling, rigging, animation, materials and
+lighting, targeting independently reviewed AAA quality with flexible cinematic/8K
+and real-time budgets. Sundown's unfinished art is not the quality benchmark.
 
-**Verified engineering preview: [0.8.0 ZIP](dist/framewright_studio-0.8.0.zip).** All 82
-verification stages passed on unchanged source bytes: 812 Python tests, 69 Blender
-suites, packaging and actual 0.7→0.8→0.7→0.8 install/upgrade/rollback. Python 3.13
-also passed all 812 tests. This increment adds shared PBR material-atlas baking,
-preserves cold hidden-object review transforms and corrects exported atlas UV selection.
-Actual 1024 and 8192 cabinet atlases pass cold Blender/GLB/FBX renders and map audits.
-The 8K worker takes about 20 minutes and peaks at 16.39 GiB working memory.
-A separate repaired adapter passes isolated Unreal 5.8.3 import/settings checks;
-cold reload is in progress. The release runtime has not received those fixes.
-Technical checks do not grant artistic or native-engine acceptance.
-See [verification](docs/verification.md) for package/source checkpoint hashes, evidence and limits.
+**Current scope: Blender only.** Unreal and Sundown integration are deferred and
+are not release requirements. Earlier engine experiments remain historical
+evidence; do not launch or extend them without a new explicit request. Unreal is
+not required to install or use the Blender extension.
 
-Completed artwork: [Blue Horizon](artifacts/blue-horizon-20261030/readme.md), a separate
-editable carrier launch scene with a 30-second 720p video and 4K still. All 45 scene
-checks and the full 720-frame video decode pass. Blender scripts authored the assets;
-Framewright inspected/validated them. The original resource-reporting failure and
-temporary workaround remain recorded; the [verified correction](docs/increment14-resource-accounting.md)
-now inspects the original editable scene directly. Character refinement, Sundown
-native pilots and production acceptance remain open.
+## Verified delivery
 
-## Implemented in the checkout
+[0.9.0 engineering preview ZIP](dist/framewright_studio-0.9.0.zip): 84 aggregate
+stages, 71 Blender suites, all 830 standalone Python cases across the initial run
+and focused setup rechecks, and installed upgrade/rollback checks pass.
+The [verification record](docs/verification.md) preserves hashes and limitations.
+Later checkout changes have focused evidence and are not part of this sealed ZIP.
+The latest Blender fix builds [closed convex hulls](docs/native-derivative-handoff.md)
+without internal source faces; its new regression and two affected checks pass.
+[Blender character research](docs/blender-knee-backtracking.md) adds four focused
+regressions and retains all affected fold checks. Blender verifies 11.9% lower
+worst contact deficit; 20 contact failures still prevent character acceptance.
 
-- Scene preflight, evaluated topology, UV/material diagnostics and configurable profiles.
-- Hashed provenance, reference boards/landmarks, stale-plan protection and scoped rollback.
-- Editable cabinet/facade builders, static LOD/collision derivatives, cage normal and shared PBR atlas baking, material assignment and measured texel density.
-- Explicit metarig fitting, stock Rigify generation, source-preserving skin binding, weight/corrective tools, sampled deformation/contact checks, retarget/bake/cleanup and secondary bindings.
-- Separate neutral/day/dusk review scenes, evaluated region authoring and sampled contacts, resource estimates, scoped GLB/FBX export and cold-reimport fixtures.
-- Strict JSON commands, gated workflows, owned background jobs, optional local MCP stdio and measured repair ranking. No AI account or runtime dependency installation required.
-- [Tool inventory](docs/tool-inventory.md): 59 commands, six profiles and six configured MCP wrappers. Native import utilities are separate and provisional.
+[Blue Horizon](artifacts/blue-horizon-20261030/readme.md) is a separate editable
+30-second carrier launch scene, with 720p video and a 4K still. Blender scripts
+authored it; Framewright inspected and validated it.
 
-These are bounded tools with documented limits. They do not generate finished assets
-from text or establish artistic approval, studio parity, native engine parity or runtime
-performance. [Local review kit](docs/benchmark-review.md) and [performance measurements](docs/performance-baseline.md)
-provide inspectable evidence. Actual 8K output/maps and bounded rendered GLB/FBX material
-fixtures are verified; the human stress pilot still needs deformation refinement and
-artist approval.
-An [actual 8K texture handoff](docs/8k-handoff.md) passed both cold GLB/FBX imports and
-512px render comparisons; process memory is measured. Sundown native/runtime pilots,
-remaining character art and full production acceptance stay open.
+## Implemented and remaining
+
+- Modeling: evaluated topology, UV/material diagnostics, cabinet/facade builders,
+  LOD/collision derivatives, normal/atlas baking and flexible profiles.
+- Rigging/animation: metarig fitting, stock Rigify, skin binding, weight/corrective
+  tools, sampled deformation/contact checks, retargeting and animation cleanup.
+- Scene workflows: review lighting/cameras, resource estimates, provenance,
+  source-preserving repairs, GLB/FBX export and cold reimport in Blender.
+- AI access: validated JSON commands, gated workflows, owned background jobs and
+  optional local MCP. See [59-command inventory](docs/tool-inventory.md).
+
+These are bounded production-assistance tools. Remaining Blender work includes
+character deformation, representative motion/contacts, source material fidelity,
+lighting calibration, performance and artistic review. 8K output and technical
+checks do not establish finished art or studio parity. See the [roadmap](docs/roadmap.md).
 
 ## Develop and verify
 
-Tested environment: **Windows, Blender 5.2.1 LTS**. From this folder:
+Target: Windows / Blender 5.2.1 LTS and one standalone Python, currently 3.15.2.
+Blender uses its own bundled Python. No standalone multi-version test matrix.
 
 ```powershell
 uv sync --frozen --python 3.15.2
+```
+
+Use focused failing-then-passing tests while developing. Run the full aggregate
+only for major milestones/releases:
+
+```powershell
 uv run --frozen python scripts/check.py --blender 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe'
 ```
 
-Omit `--blender` for Python checks. Blender fixtures use owned background processes;
-tests do not attach to the shared editor or modify Sundown. The extension uses Python's
-standard library and Blender-bundled modules. Generated assets and evidence remain in
-ignored `artifacts/`, outside the install ZIP.
-Use focused tests while developing; run the full command above at major milestones
-or releases. The standalone development target is one latest-stable Python (3.15.2);
-there is no host-version matrix. Python 3.15.2 passes all 830 current candidate
-cases across the initial run and five focused environment rechecks; no full rerun.
-Use uv 0.13.6 or newer for its managed download. Blender/Unreal checks use their bundled runtimes.
-Do not replace an environment while an owned worker is using it.
+Blender checks use owned background processes and preserve source assets. Do not
+replace environments while workers use them. Generated evidence stays outside the
+install ZIP. Use uv 0.13.6 or newer for the pinned Python download.
 
-Install a **verified** ZIP through Blender Preferences → Get Extensions → Install from
-Disk, then open the 3D View sidebar → **Framewright**. The production tools and JSON
-workflow operators are included; use the exact ZIP identified in the final
-verification receipt. Mutation defaults to preview; supported derivatives retain their sources and
-start hidden. See [AI API](docs/ai-api.md) and [MCP setup](docs/increment3-ai.md).
+Install the verified ZIP through Blender Preferences → Get Extensions → Install
+from Disk, then open the 3D View sidebar → **Framewright**. Mutation defaults to
+preview. See [AI API](docs/ai-api.md) and [MCP setup](docs/increment3-ai.md).
 
-## Work order
-
-- [Roadmap](docs/roadmap.md): implementation status, remaining engineering and acceptance gates.
-- [Verification](docs/verification.md): suite results, release receipts and unverified boundaries.
-- [Sundown contract](docs/sundown-integration.md): staging, identity and native pilot requirements.
-- [Research](docs/research.md): gap register and official source basis.
-
-Keep this README brief and update the roadmap/evidence when delivering an increment.
-Local Git on `main`; verified source checkpoints retained, no author identity or remote configured.
-No publication performed. GPL-3.0-or-later.
+Keep this README brief and current. No remote publication or Sundown edits have
+been made by this task. GPL-3.0-or-later.

@@ -1,0 +1,17 @@
+{
+  "FileVersion": 3,
+  "Version": 2,
+  "VersionName": "0.2.0",
+  "FriendlyName": "Framewright Native Bridge",
+  "Description": "Scoped texture compilation and full-precision static import pipelines for Framewright.",
+  "Category": "Editor",
+  "CreatedBy": "Framewright Studio",
+  "EngineVersion": "5.8.0",
+  "EnabledByDefault": false,
+  "CanContainContent": false,
+  "SupportedTargetPlatforms": ["Win64"],
+  "Plugins": [{"Name": "Interchange", "Enabled": true}],
+  "Modules": [
+    {"Name": "FramewrightNativeBridge", "Type": "Editor", "LoadingPhase": "Default", "PlatformAllowList": ["Win64"]}
+  ]
+}

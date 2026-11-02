@@ -110,6 +110,7 @@ def material_fake():
     plan = {"source": {"path": "part.glb"}, "geometry": inspect_glb(pbr_glb())}
     backend = object.__new__(UnrealStaticBackend)
     backend.owned_root = "/Game/FramewrightPilots/Cabinet_aaaaaaaaaaaa"
+    backend.lease = {"held": True, "owner": "modeled-readback"}
 
     class Texture:
         def __init__(self, index):
@@ -144,7 +145,12 @@ def material_fake():
                 "parent": NS(
                     get_path_name=lambda: "/InterchangeAssets/gltf/Substrate/M_GLTF.M_GLTF"
                 ),
-                "base_property_overrides": NS(override_two_sided=True, two_sided=False),
+                "base_property_overrides": NS(
+                    get_editor_property=lambda name: {
+                        "override_two_sided": True,
+                        "two_sided": False,
+                    }[name]
+                ),
             }
 
         def get_editor_property(self, key):
@@ -183,6 +189,11 @@ def material_fake():
         vectors[key + "_OffsetScale"] = [0, 0, 1, 1]
     switches = {"bHas" + key: value is not None for key, value in maps.items()}
     backend.u = NS(
+        FramewrightTextureLibrary=NS(
+            finish_owned_textures=lambda textures, root: NS(
+                ready=True, error="", texture_count=len(textures), pending_before=0, pending_after=0
+            )
+        ),
         MaterialInstanceConstant=Material,
         MaterialInstance=Material,
         Texture2D=Texture,
@@ -416,32 +427,16 @@ def test_native_entrypoint_is_inert_on_import_and_requires_explicit_apply(
 
 
 def test_native_backend_pins_import_level_and_installed_engine_pipelines(handoff):
-    from types import SimpleNamespace
+    from test_native_uv_precision import import_fake
 
-    from framewright.unreal_static import UnrealStaticBackend
-
-    values, calls = {}, []
-    options = SimpleNamespace(set_editor_property=lambda key, value: values.update({key: value}))
-    manager = SimpleNamespace(
-        import_scene=lambda root, data, args: calls.append((root, data, args)) or True
-    )
-    backend = object.__new__(UnrealStaticBackend)
-    backend.owned_root = "/Game/FramewrightPilots/Cabinet_aaaaaaaaaaaa"
-    backend.levels = SimpleNamespace(get_current_level=lambda: "owned-level")
-    backend.u = SimpleNamespace(
-        ImportAssetParameters=lambda: options,
-        SoftObjectPath=lambda x: x,
-        InterchangeManager=SimpleNamespace(
-            get_interchange_manager_scripted=lambda: manager, create_source_data=lambda x: x
-        ),
-    )
-    backend.import_scene(str(handoff[2] / "part.glb"), backend.owned_root + "/Assets")
+    backend, source, pipeline, values, calls = import_fake(handoff[2])
+    backend.import_scene(str(source), backend.owned_root + "/Assets")
     assert values["replace_existing"] is False
     assert values["follow_redirectors"] is False
     assert values["import_level"] == "owned-level"
     assert values["force_show_dialog"] is False
     assert values["override_pipelines"] == [
-        "/Interchange/Pipelines/DefaultGLTFSceneAssetsPipeline.DefaultGLTFSceneAssetsPipeline",
+        pipeline.get_path_name(),
         "/Interchange/Pipelines/DefaultGLTFPipeline.DefaultGLTFPipeline",
         "/Interchange/Pipelines/DefaultSceneLevelPipeline.DefaultSceneLevelPipeline",
     ]

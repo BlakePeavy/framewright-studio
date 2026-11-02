@@ -1,5 +1,9 @@
 # Sundown Run integration contract
 
+> Scope update (2026-11-01): engine integration/testing is deferred. This record
+> is historical, not an instruction to resume Unreal work. The Blender hull
+> correction remains applicable; destination-specific follow-ups are outside scope.
+
 Read-only discovery: 2026-10-30. No Sundown files, scene data, installed build, task records or preferences were changed while starting Framewright.
 
 **Quality authority:** Framewright targets independently reviewed modern AAA studio quality, with flexible profiles including 8K. Sundown's current art is work in progress and is not the visual benchmark. The game evidence below supplies integration, preservation and historical workflow constraints; its existing quality documents do not cap this add-on's quality target.

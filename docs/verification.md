@@ -5,9 +5,206 @@ Validation uses owned fixtures/background processes. It has not changed the shar
 Blender session, Sundown assets or the native game runtime. Technical checks, visual
 review, native integration and production acceptance are separate outcomes.
 
-The recommended install is the **0.8.0 ZIP identified below**. Its final aggregate
-and both Python matrices pass. Earlier packages, source checkpoints and failure
-evidence remain retained. No native-engine execution or artistic acceptance is implied.
+The recommended install is the **0.9.0 ZIP identified below**. Its final aggregate
+and latest-host validation pass. Earlier packages, source checkpoints and failure
+evidence remain retained. Separate native research does not certify the packaged adapter.
+
+## Connected Blender contact diagnosis
+
+The [receipt](../artifacts/verification/blender-knee-contact-anchors-20261101.json)
+records exact517,335-row reconstruction, nine focused tests and retained plane/
+pose-anchor refusals. The dominant witness imposes opposing constraints on
+shared vertices at two near-matched105degree poses; source differences are
+at most3.983µm. See [the connected patch and next repair](blender-knee-contact-anchors.md).
+No candidate, public command or release was promoted; no full suite or engine ran.
+
+## Guarded Blender character solve
+
+The [receipt](../artifacts/verification/blender-knee-guarded-solve-20261101.json)
+records 517,335 constraints, seven focused tests and a checked109-row joint
+conflict witness. The25-pose correction is refused; the witness excludes this
+chosen mathematical system, not arbitrary Blender deformation. Both numeric
+workers exited; inputs, runtime and release remain unchanged. See
+[result and next work](blender-knee-guarded-solve.md). No calibration, full
+suite or engine run was repeated.
+
+## Wider Blender character response
+
+The [receipt](../artifacts/verification/blender-knee-wide-response-20261101.json)
+verifies all25 pose maps at±2.5mm per coordinate, unchanged1µm sampled accuracy,
+12 focused numerical tests and source preservation. The prior two contact rows
+are individually achievable with nonlinear guards and unchanged8µm clearance.
+The [subsequent coupled solve](blender-knee-guarded-solve.md) proves a joint
+conflict in the chosen constraints. No actual candidate is accepted. No engine
+or full suite ran.
+
+## Blender-only character continuation
+
+The [receipt](../artifacts/verification/blender-knee-composition-20261101.json)
+verifies23 fresh pose maps, reused two-pose evidence, complete failure-state
+coverage, six focused tests and source preservation. The25-pose constraints
+reject one clearance condition; no corrected character or public feature was
+accepted. See [results and next gate](blender-knee-composition.md).
+
+Current scope is Blender only. The engine sections below are historical and
+do not authorize more engine work or impose Blender release requirements.
+
+## Unreleased native runtime integration
+
+The [integration receipt](../artifacts/verification/native-integration-20261101.json)
+records 204 affected cases on Python 3.15.2: 202 pass initially, then the two failing
+fixtures pass after replacing their stale root getter with the reflected property.
+Changed-file Ruff passes. Both production modules exactly match the bytes used in
+the retained isolated UE 5.8.3 warm/cold runs; no engine run, bake or full suite was
+repeated. The [integration notes](native-runtime-integration.md) describe the limits.
+This is an unreleased checkout change; the verified 0.9 archives remain unchanged.
+
+## Native base-color evidence
+
+The [pixel receipt](../artifacts/verification/native-appearance-20261101.json) records
+two passing 512px Blender→Unreal base-color comparisons on the original 0.8 cabinet,
+with seven camera tests, material-loss controls and unchanged saved assets. One
+native run took 19.06 seconds; a source-only background correction reused the
+unaffected detail view. No imports, bakes or full suite were repeated.
+[Scope and images](native-appearance-review.md) retain the local outliers, uncalibrated
+lighting and remaining appearance gates. This does not change the sealed 0.9 runtime.
+
+## Native surface diagnostics
+
+The [surface receipt](../artifacts/verification/native-surface-20261101.json) retains
+nine passing metric tests, failures and unchanged-source/native-file checks.
+Bounded roughness passes; matched point sampling corrects normal measurement,
+but the normal corruption control remains too weak. Original metallic error
+fails. A temporary no-mipmap diagnostic passes, implicating mip filtering;
+full-precision UVs alone do not fix it and rebuilding still fails the bounds gate.
+[Details](native-surface-review.md) preserve unchanged limits and remaining gates.
+No runtime code, release ZIP, import or bake changed; no full suite was repeated.
+
+## Convex collision correction and native derivative gap
+
+The [receipt](../artifacts/verification/native-derivatives-20261101.json) retains
+a failing/passing real-Blender hull regression plus two affected passing cases.
+Independent exported topology changes from 38 triangles with internal faces
+to a closed 24-triangle convex surface, preserving source/LOD geometry. One
+15-second Unreal readback reproduces missing LOD/collision assignment; that
+gate stays false. All 522 prior/input pins remain exact; no cold run, bake,
+render or full suite ran. See [scope and next work](native-derivative-handoff.md).
+
+## Unreleased full-precision native import
+
+The [receipt](../artifacts/verification/native-uv-precision-20261101.json) verifies
+the new transient pipeline helper and independent mesh-setting readback. Nine
+new and 51 affected host cases pass. The companion builds, and one fresh import
+/ cold reload preserves all 5,836 triangles, both UVs, winding, normals and material
+assignment within the existing limits; UV error is zero. All 462 pins remain exact.
+Companion 0.2.0 is required; the sealed Blender release is unchanged. See
+[evidence and limits](native-uv-precision.md). No full suite, bake or render ran.
+
+## Bounded native mesh fidelity
+
+The [receipt](../artifacts/verification/native-mesh-fidelity-20261101.json)
+retains independent GLB→native comparisons for all 5,836 cabinet triangles,
+split normals, both UV channels, winding and material assignments. SourceModel
+passes; saved RenderData shifts UVs up to two pixels at 8K. An unsaved full-UV
+rebuild passes with no measured bounds change. Fourteen focused host tests and
+Ruff pass; one 15.92-second native worker preserves 354 pins. The production
+import fix and the earlier bounds discrepancy remain open. See
+[scope and next work](native-mesh-fidelity.md); no full suite, bake or render ran.
+
+## Bounded native normal validation
+
+The [receipt](../artifacts/verification/native-normal-20261101.json) retains a
+six-region fixture, source EXR/masks, public 1K atlas/direct GLBs and cold native
+captures. All 51,726 interior pixels are assessed by region under unchanged
+1° mean / 3° P95 gates. Worst native means are 0.179° atlas / 0.157° direct;
+disabled/inverted controls reject every region at about 35°/70°. Five new
+acceptance tests pass. All 352 pins remain unchanged; no runtime code, full
+suite or 8K bake changed. See [scope and remaining gates](native-normal-validation.md).
+
+## Unreleased native texture readiness
+
+The [receipt](../artifacts/verification/native-readiness-20261101.json) records
+12 new and 64 affected Python 3.15.2 cases, Ruff and a strict C++ editor-bridge
+build. Fresh Unreal 5.8.3 readback changes three pending 32px placeholders to
+8192px through the adapter's owned-texture wait. Five invalid native batches
+reject before work; empty input succeeds. All 208 pins remain unchanged, with
+no import/save/render or global compilation barrier. The [companion and limits](native-texture-readiness.md)
+are separate from the sealed Blender ZIP; shader/GPU readiness is unverified.
+
+## Unreleased literal material preservation
+
+The [receipt](../artifacts/verification/atlas-constants-20261101.json) records
+eight focused Python 3.15.2 cases, four Blender cases and Ruff. The public 1K
+cabinet passes source/atlas and cold GLB metallic comparison exactly. Fresh
+Unreal import/cold settings and calibrated metallic capture pass; a zero-metal
+control rejects. Mean/P95 error is 0.001089/0.002051; maximum remains 0.21309.
+All saved assets and 54 earlier fixture pins are preserved. See [scope and
+limits](atlas-material-constants.md). The configured Blender suite count is
+73; no aggregate or 8K rebake ran. Release artifacts remain unchanged.
+
+## Unreleased atlas mip padding
+
+The [padding receipt](../artifacts/verification/atlas-mip-padding-20261101.json)
+records 92 focused Python 3.15.2 cases, four Blender checks (three passes plus
+one isolated explicit-margin regression), and changed-file Ruff. One owned
+512px cube bake checks four packed maps and source preservation. The new suite
+is registered for the next milestone; no aggregate was run. The
+[native mip study](native-mip-review.md) adds five sampling tests and retained
+fixed-level captures; original native appearance and the sampler difference
+remain open. No retained 8K bake or native import was repeated. Release ZIPs
+remain unchanged; [the new option](atlas-mip-padding.md) is checkout-only.
+
+## Verified 0.9 checkpoint
+
+The [combined receipt](../artifacts/verification/release-0.9.0-candidate.json)
+and [log](../artifacts/verification/release-0.9.0-candidate.log), recorded at
+17:40:43 UTC on 2026-11-01, pass **84 stages in 418.807 seconds**: 830 Python
+tests, 71 Blender suites, package byte audit, actual 0.8→0.9→0.8→0.9 lifecycle,
+batch, worker and packaged MCP checks. All **210 source/config files** stayed
+unchanged, SHA256 `94c68498aaa67fdc5791bb1048edf24094dcb53360e765c0d1f86c1316334ed5`.
+The isolated [Python 3.13 matrix](../artifacts/verification/python313-0.9-20261101T173838Z-37246c49.json)
+and [log](../artifacts/verification/python313-0.9-20261101T173838Z-37246c49.log)
+pass 830 tests and 294 subtests without skips on identical bytes. These are
+historical checks, not an ongoing version matrix. The new standalone target is
+Python 3.15.2: its [migration receipt](../artifacts/verification/python315-0.9-final.json)
+accounts for all 830 cases across 825 initial passes and five focused environment
+rechecks, with 294 subtests and unchanged source. The original sandbox failures
+and unconfigured smoke-test skips are retained; the full suite was not repeated.
+
+The 0.9 ZIP is 238,534 bytes / 51 files, SHA256
+`5d68a1d3149d666f59912d438a0ee2fb31548c4517f337a03d18d4781f36b63a`;
+its [audit](../dist/framewright_studio-0.9.0.receipt.json) matches tested runtime
+bytes. [Atlas sampling](atlas-sampling.md) and [export preservation](export-preservation.md)
+describe the changes. The [public refined-cabinet 1K/8K handoff](../artifacts/verification/public-8k-default16-0.9.json)
+passes: default16 8K takes 41.26 minutes, peaks at 15.49 GiB working set and passes
+six cold/map checks with preserved sources. Closed-study evidence retention and
+these final receipts are sealed. The [promotion receipt](../artifacts/verification/promotion-0.9.0.json)
+verifies 544 published files with replacement backups, unchanged staging and
+all earlier release artifacts preserved. The user's newer existing commit remains intact.
+
+The [source checkpoint](../artifacts/verification/git-tree-0.9.0.json) seals 281 files
+at tree `78c5d58834764443c6922e6d93c5686c83983a7d`, retained under
+`refs/framewright/checkpoints/0.9.0`. The [source ZIP](../dist/framewright-studio-source-0.9.0.zip)
+is 963,752 bytes, SHA256 `5640298cef3b569da4c7e42c9876ba57bfbba32e428f929cb49a905274ea92b0`.
+Every archive file matches its verified Git blob. A separate index preserves user
+staging; no author, commit or remote publication was created. These checkpoint notes
+follow the immutable archive and are recorded separately.
+
+The [separate native repair](../artifacts/verification/native-isolated-20261101.json)
+passes actual isolated Unreal 5.8.3 import and fresh-process geometry/settings
+readback for the original 0.8 cabinet: 29 meshes, door pivot, verified empty scene
+container and three 8192px textures. It saves 34 owned packages; cold readback leaves
+all native bytes unchanged and restores Initial. The first two cold attempts read
+32px async placeholders; the engine compilation barrier resolves them without
+relaxing checks. Native fixes remain outside this frozen 0.9 runtime. Rendered
+appearance, complete surface geometry, collision/LOD, runtime and Sundown gates stay open.
+
+The [final evidence retention](../artifacts/final-evidence-retention-0.9.json)
+adds 131 bounded files (6.70 MB) to the earlier 378-file closed-study retention.
+[Primary external assets](../artifacts/verification/external-final-assets-0.9.json)
+remain hashed in their owned workspace locations: 44 editable/export/native files,
+2.15 GB. Historical paths are unchanged; these receipts are not a standalone
+reproduction archive and do not duplicate the large assets in the repository.
 
 ## Verified engineering preview: 0.8.0
 

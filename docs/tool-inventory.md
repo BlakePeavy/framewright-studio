@@ -49,6 +49,13 @@ Blender work runs in owned background jobs with explicit inputs and output locat
 
 ## Remaining development
 
+The isolated **0.9 candidate still exposes 59 commands**. It adds configurable
+atlas spatial sampling (default 16), preserves long FBX object identities and
+fixes cold-hidden static export transforms. Its 84-stage aggregate and both
+830-test Python matrices pass. New 8K validation and promotion remain open;
+this inventory's released counts and install recommendation remain 0.8.
+See [sampling](atlas-sampling.md) and [export scope](export-preservation.md).
+
 The [roadmap](roadmap.md) tracks production outcomes, so remaining work does not
 translate into a fixed count of additional commands. The main open areas are:
 
@@ -67,3 +74,8 @@ Framewright supplies editable, bounded production operations and AI-readable
 workflows. It does not currently turn a text prompt into a finished AAA asset,
 scene or animation. The carrier cinematic was authored with Blender scripts;
 Framewright supplied inspection, validation and resource reporting.
+
+The unreleased native adapter additionally requires the editor-only
+[FramewrightNativeBridge](native-texture-readiness.md) for owned texture
+compilation readiness and version 0.2.0's [full-precision import helper](native-uv-precision.md).
+It adds no AI commands and is separate from the Blender ZIP.

@@ -132,7 +132,11 @@ static opaque Principled materials. The [build→atlas→review example](../exam
 binds exact part names between steps and defaults to whole-workflow preview. Setting
 the workflow's `dry_run` to `false` creates an editable cabinet, hidden atlas derivatives
 and a separate review scene; export is a separate explicit action. The [atlas contract](increment16-material-atlas.md)
-documents image budgets, unsupported semantics and cold-handoff evidence. It does
+documents image budgets, unsupported semantics and cold-handoff evidence. The
+[sampling extension](atlas-sampling.md) adds integer `bake_samples` (1–64, default 16);
+explicit 1 selects the faster single-sample behavior. Applied results expose actual
+`effective_sampling`; preview does not claim execution. Extra samples increase work
+without changing image budgets or guaranteeing visual acceptance. The command does
 not grant artistic acceptance or imply that the 0.8 package has passed final verification.
 
 In a source checkout, on Blender's main thread:

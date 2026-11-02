@@ -153,7 +153,11 @@ def create_collision(params, context=None):
     derivative = None
     try:
         mesh = _evaluated_mesh(source, context)
-        temporary.from_mesh(mesh)
+        # A collision hull is built from points only. Passing existing faces to
+        # convex_hull can retain internal faces between hull vertices, even with
+        # use_existing_faces=False and geom_interior/geom_unused cleanup.
+        for vertex in mesh.vertices:
+            temporary.verts.new(vertex.co)
         hull = bmesh.ops.convex_hull(
             temporary, input=list(temporary.verts), use_existing_faces=False
         )

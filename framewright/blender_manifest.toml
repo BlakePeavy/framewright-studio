@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "framewright_studio"
-version = "0.8.0"
+version = "0.9.0"
 name = "Framewright Studio"
 tagline = "AI-friendly modeling, rigging, animation and scene workflows"
 maintainer = "Framewright Studio contributors"

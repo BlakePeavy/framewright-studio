@@ -329,15 +329,61 @@ def _scale_owned_action(action, substeps):
         curve.update()
 
 
-def _source_record(objects):
+def _static_export_matrices(objects):
+    """Read authored ordinary static hierarchies without evaluating hidden sources.
+
+    Animated, skinned and non-object-parented exports keep their existing sampled
+    behavior. This path deliberately covers only complete static mesh/empty trees.
+    """
+    if any(
+        obj.type not in {"MESH", "EMPTY"}
+        or obj.parent_type != "OBJECT"
+        or obj.constraints
+        or any(getattr(owner, "animation_data", None) for owner in _animation_owners(obj))
+        for obj in objects
+    ):
+        return None
+    included = set(objects)
+    if any(obj.parent is not None and obj.parent not in included for obj in objects):
+        raise ValueError("Static export requires the complete parent hierarchy")
+    matrices = {}
+    for obj in objects:
+        pending = []
+        current = obj
+        seen = set()
+        while current is not None and current not in matrices:
+            if current in seen:
+                raise ValueError("Static export parent hierarchy is cyclic")
+            seen.add(current)
+            pending.append(current)
+            current = current.parent
+        for item in reversed(pending):
+            matrix = item.matrix_basis.copy()
+            if item.parent is not None:
+                matrix = matrices[item.parent] @ item.matrix_parent_inverse @ matrix
+            if not all(math.isfinite(value) for row in matrix for value in row):
+                raise ValueError("Static export requires finite authored transforms")
+            matrices[item] = matrix
+    return matrices
+
+
+def _source_record(objects, static_matrices=None):
     records = []
     for obj in objects:
         record = {
             "name": obj.name,
             "type": obj.type,
             "parent": obj.parent.name if obj.parent else None,
-            "matrix_world": _matrix(obj.matrix_world),
-            "matrix_local": _matrix(obj.matrix_local),
+            "matrix_world": _matrix(
+                static_matrices[obj] if static_matrices is not None else obj.matrix_world
+            ),
+            "matrix_local": _matrix(
+                obj.matrix_parent_inverse @ obj.matrix_basis
+                if static_matrices is not None and obj.parent is not None
+                else obj.matrix_basis
+                if static_matrices is not None
+                else obj.matrix_local
+            ),
             "materials": [
                 slot.material.name if slot.material else None for slot in obj.material_slots
             ],
@@ -384,8 +430,40 @@ def _source_record(objects):
     return records
 
 
+def _fbx_name_digest(name):
+    return hashlib.sha256(name.encode("utf-8")).hexdigest()[:16]
+
+
+def _fbx_object_aliases(names, occupied):
+    """Keep FBX object names below Blender's importer rewrite boundary.
+
+    The installed FBX importer rewrites names longer than 63 UTF-8 bytes.
+    Reserve aliases against every existing object and each other before copying;
+    do not rely on Blender's automatic numeric suffix extending the byte count.
+    """
+    used = set(occupied)
+    aliases = {}
+    for name in sorted(names):
+        requested = "FW_Export_" + name
+        candidate = requested
+        if len(candidate.encode("utf-8")) > 63 or candidate in used:
+            stem = requested.encode("utf-8")[:46].decode("utf-8", "ignore")
+            base = stem + "_" + _fbx_name_digest(name)
+            candidate = base
+            serial = 1
+            while candidate in used:
+                suffix = "_" + str(serial)
+                candidate = (
+                    base.encode("utf-8")[: 63 - len(suffix)].decode("utf-8", "ignore") + suffix
+                )
+                serial += 1
+        aliases[name] = candidate
+        used.add(candidate)
+    return aliases
+
+
 @contextmanager
-def _staging(objects, context, include_animation=False, animation_substeps=1):
+def _staging(objects, context, include_animation=False, animation_substeps=1, fbx_names=False):
     original_scene = context.scene
     original_layer = context.view_layer
     original_window = context.window
@@ -399,6 +477,14 @@ def _staging(objects, context, include_animation=False, animation_substeps=1):
     data_copies = []
     owned_actions = []
     try:
+        static_matrices = _static_export_matrices(objects) if not include_animation else None
+        aliases = (
+            _fbx_object_aliases(
+                [source.name for source in objects], {obj.name for obj in bpy.data.objects}
+            )
+            if fbx_names
+            else None
+        )
         scene.render.fps = context.scene.render.fps
         scene.render.fps_base = context.scene.render.fps_base
         scene.frame_start, scene.frame_end = context.scene.frame_start, context.scene.frame_end
@@ -407,7 +493,9 @@ def _staging(objects, context, include_animation=False, animation_substeps=1):
         for source in objects:
             copy = source.copy()
             copies[source] = copy
-            copy.name = "FW_Export_" + source.name
+            copy.name = aliases[source.name] if aliases is not None else "FW_Export_" + source.name
+            if aliases is not None and copy.name != aliases[source.name]:
+                raise RuntimeError("FBX staging alias allocation changed unexpectedly")
             if source.data:
                 copy.data = source.data.copy()
                 data_copies.append(("meshes" if source.type == "MESH" else "armatures", copy.data))
@@ -438,7 +526,13 @@ def _staging(objects, context, include_animation=False, animation_substeps=1):
                         _scale_owned_action(action, animation_substeps)
         for source, copy in copies.items():
             copy.parent = copies.get(source.parent)
-            copy.matrix_world = source.matrix_world.copy()
+            # Copied authored channels and parent inverses already represent the
+            # static hierarchy exactly, including shear. A hidden cold source's
+            # cached matrix_world may still be identity; never assign it here.
+            if static_matrices is None:
+                copy.matrix_world = source.matrix_world.copy()
+            else:
+                copy.matrix_parent_inverse = source.matrix_parent_inverse.copy()
             for modifier in copy.modifiers:
                 target = getattr(modifier, "object", None)
                 if target is not None:
@@ -452,6 +546,13 @@ def _staging(objects, context, include_animation=False, animation_substeps=1):
         staged_frame = (original_frame[0] + original_frame[1]) * animation_substeps
         scene.frame_set(math.floor(staged_frame), subframe=staged_frame % 1)
         scene.view_layers[0].update()
+        if static_matrices is not None:
+            # A copied cold object's transform cache can also start stale. The
+            # owned graph must exist before tagging its copies for reevaluation.
+            # All parents/dependencies were remapped before the first update.
+            for copy in copies.values():
+                copy.update_tag(refresh={"OBJECT"})
+            scene.view_layers[0].update()
         yield scene, copies
     finally:
         # Some exporters assign Window.scene internally despite a context
@@ -718,7 +819,8 @@ def export_asset(params, context=None):
                     raise ValueError(
                         "Morph export with Bendy-bone segments needs a separately verified deformation bake"
                     )
-    source = _source_record(objects)
+    static_matrices = _static_export_matrices(objects) if not p["include_animation"] else None
+    source = _source_record(objects, static_matrices)
     fingerprint = _hash_json(source)
     settings = _settings(p["format"], p["include_animation"], bool(morph_meshes))
     scalar_plan = (
@@ -745,6 +847,9 @@ def export_asset(params, context=None):
         "unit_system": context.scene.unit_settings.system,
         "unit_scale": context.scene.unit_settings.scale_length,
         "source": source,
+        "source_transform_semantics": (
+            "authored_static_hierarchy" if static_matrices is not None else "sampled_source_state"
+        ),
         "source_fingerprint_before": fingerprint,
         "settings": _portable_settings(settings),
         "animation_sampling": animation_plan,
@@ -781,7 +886,13 @@ def export_asset(params, context=None):
             prefix=".framewright-export-", dir=p["directory"]
         ) as temporary:
             staged_path = Path(temporary) / path.name
-            with _staging(objects, context, p["include_animation"], p["animation_substeps"]) as (
+            with _staging(
+                objects,
+                context,
+                p["include_animation"],
+                p["animation_substeps"],
+                p["format"] == "FBX",
+            ) as (
                 scene,
                 copies,
             ):
@@ -811,7 +922,12 @@ def export_asset(params, context=None):
                     outcome = exporter(filepath=str(staged_path), check_existing=False, **settings)
                     if outcome != {"FINISHED"} or not staged_path.is_file():
                         raise RuntimeError("Exporter did not produce a completed file")
-            after = _hash_json(_source_record(objects))
+            after = _hash_json(
+                _source_record(
+                    objects,
+                    _static_export_matrices(objects) if static_matrices is not None else None,
+                )
+            )
             receipt["source_fingerprint_after"] = after
             if after != fingerprint:
                 raise RuntimeError("Source data changed during export; output was not published")

@@ -1,6 +1,6 @@
 """Framewright Studio: Blender entry point; core imports also work outside Blender."""
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 
 
 def register():

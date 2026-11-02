@@ -28,6 +28,12 @@ def test_discovery_declares_owned_scene_mutation_and_preview_default():
     assert entry["input_schema"]["required"] == ["object_names"]
     assert entry["input_schema"]["properties"]["dry_run"]["default"] is True
     assert entry["input_schema"]["properties"]["object_names"]["uniqueItems"] is True
+    assert entry["input_schema"]["properties"]["bake_samples"] == {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 64,
+        "default": 16,
+    }
     validate_params(COMMAND, payload()["params"])
 
 
@@ -42,6 +48,12 @@ def test_discovery_declares_owned_scene_mutation_and_preview_default():
         {"resolution": True},
         {"resolution": 63},
         {"resolution": 8193},
+        {"bake_samples": True},
+        {"bake_samples": False},
+        {"bake_samples": 16.0},
+        {"bake_samples": 0},
+        {"bake_samples": 65},
+        {"bake_samples": "16"},
         {"margin": -1},
         {"margin": 65},
         {"max_memory_mb": 0},
@@ -71,12 +83,22 @@ def test_missing_scope_never_imports_a_backend():
 
 
 def test_dispatch_uses_only_fixed_atlas_adapter():
-    request = payload(dry_run=False)
+    request = payload(dry_run=False, bake_samples=16)
     with patch("framewright.commands.import_module") as loader:
         loader.return_value.bake_material_atlas.return_value = {"source_preserved": True}
         response = dispatch(request)
     assert response["ok"], response
     loader.assert_called_once_with(".material_atlas", "framewright")
+    loader.return_value.bake_material_atlas.assert_called_once_with(request["params"])
+
+
+@pytest.mark.parametrize("samples", [1, 16, 64])
+def test_valid_sampling_values_reach_only_the_fixed_adapter(samples):
+    request = payload(bake_samples=samples)
+    validate_params(COMMAND, request["params"])
+    with patch("framewright.commands.import_module") as loader:
+        loader.return_value.bake_material_atlas.return_value = {"dry_run": True}
+        assert dispatch(request)["ok"]
     loader.return_value.bake_material_atlas.assert_called_once_with(request["params"])
 
 

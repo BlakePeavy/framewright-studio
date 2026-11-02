@@ -12,8 +12,8 @@ from pathlib import Path
 from uuid import uuid4
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import bmesh  # noqa:E402
 import bpy  # noqa:E402
-
 from framewright import lod  # noqa:E402
 
 
@@ -98,6 +98,28 @@ class SurfaceComparisonTests(unittest.TestCase):
         return lod.compare_surface(
             {"source_name": self.source.name, "candidate_name": self.candidate.name, **extra}
         )
+
+    def test_convex_collision_from_disconnected_parts_has_only_closed_outer_surface(self):
+        before = self.state()
+        result = lod.create_collision({"object_name": self.source.name, "dry_run": False})
+        derivative = bpy.data.objects[result["derivative"]]
+        mesh = bmesh.new()
+        try:
+            mesh.from_mesh(derivative.data)
+            mesh.normal_update()
+            self.assertTrue(all(edge.is_manifold for edge in mesh.edges))
+            self.assertTrue(all(len(vertex.link_faces) >= 3 for vertex in mesh.verts))
+            self.assertEqual(len(mesh.verts) - len(mesh.edges) + len(mesh.faces), 2)
+            self.assertGreater(mesh.calc_volume(signed=True), 0)
+            for face in mesh.faces:
+                anchor = face.verts[0].co
+                self.assertTrue(all((vertex.co - anchor).dot(face.normal) <= 1e-5 for vertex in mesh.verts))
+            self.assertEqual(self.state()["objects"], before["objects"])
+            self.assertEqual(self.state()["active"], before["active"])
+            self.assertEqual(self.state()["frame"], before["frame"])
+            self.assertEqual(derivative.matrix_world, self.source.matrix_world)
+        finally:
+            mesh.free()
 
     def test_missing_thin_fin_is_detected_despite_zero_forward_error_and_same_bounds(self):
         before = self.state()

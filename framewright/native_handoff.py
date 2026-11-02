@@ -873,6 +873,13 @@ def _inspect_glb(data, *, max_glb_bytes, max_total_image_pixels):
             parents[child] = i
     _require(len(doc["scenes"]) == 1, "Require one selected scene")
     _integer(doc.get("scene", 0), 0, 0, "selected scene index")
+    scene_name = doc["scenes"][0].get("name")
+    if scene_name is not None:
+        scene_name = _name(scene_name, "scene")
+        _require(
+            scene_name.casefold() not in {n.casefold() for n in names},
+            "Scene/node identity collision",
+        )
     roots = doc["scenes"][0]["nodes"]
     _require(isinstance(roots, list), "Invalid scene roots")
     for root in roots:
@@ -914,6 +921,7 @@ def _inspect_glb(data, *, max_glb_bytes, max_total_image_pixels):
         )
     _require(referenced == set(range(len(meshes))), "Unreferenced meshes unsupported")
     return {
+        "scene_name": scene_name,
         "nodes": records,
         "meshes": meshes,
         "mesh_count": len(meshes),
@@ -1303,6 +1311,8 @@ def apply_plan(plan, backend, *, dry_run=True, authorized=False, owner=None):
             "Imported hierarchy/pivot/geometry/material observations do not match",
         )
         result["observed_surfaces"] = observed.get("surfaces")
+        result["texture_readiness"] = observed.get("texture_readiness")
+        result["mesh_precision"] = observed.get("mesh_precision")
         _require(
             _same_surface(expected_surfaces, observed.get("surfaces")),
             "Imported material/texture settings do not match source expectations",

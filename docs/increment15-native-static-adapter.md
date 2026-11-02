@@ -1,4 +1,8 @@
-# Offline native static-import adapter — provisional native integration in 0.8
+# Offline native static-import adapter — historical 0.8 increment
+
+Later actual UE 5.8.3 warm/cold evidence and integrated fixes are recorded in
+[native runtime integration](native-runtime-integration.md). The text below retains
+the original offline increment's scope and evidence.
 
 FW-070 remains **partial**. A real GLB handoff now compiles into a deterministic, hash-bound native import proposal, and a fixed Unreal backend can be reviewed before an authorized native window. No Unreal process, MCP connection, game write or native import was performed for this increment. Contract tests do not establish Unreal API compatibility, native appearance or successful import.
 

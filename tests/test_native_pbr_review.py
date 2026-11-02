@@ -132,7 +132,7 @@ def import_readback_fixture(*, detached_mesh):
         actor = NS(
             get_actor_label=lambda node=node: node["name"],
             get_attach_parent_actor=lambda index=index: actors[0] if index == 1 else None,
-            get_root_component=lambda root=root: root,
+            root_component=root,
             get_components_by_class=lambda cls, index=index: [component] if index == 1 else [],
             get_actor_transform=lambda node=node: node["world_matrix_cm"],
         )

@@ -615,9 +615,32 @@ def _pack_png(image, role):
     }
 
 
-def _portable_material(material, images, uv_name):
+def _constant_key(material):
+    shader, _ = _principled(material)
+    color = shader.inputs["Base Color"]
+    rgb = tuple(color.default_value[:3])
+    base = rgb if not color.is_linked and all(0 <= v <= 1 for v in rgb) else None
+    scalars = tuple(
+        shader.inputs[name].default_value
+        if not shader.inputs[name].is_linked and 0 <= shader.inputs[name].default_value <= 1
+        else None
+        for name in ("Roughness", "Metallic")
+    )
+    normal = shader.inputs["Normal"]
+    geometry_normal = not normal.is_linked and tuple(normal.default_value) == (0, 0, 0)
+    return base, *scalars, geometry_normal
+
+
+def _portable_material(material, images, uv_name, constants=(None, None, None, False)):
     shader = material.node_tree.nodes.get("Principled BSDF")
+    values = dict(zip(("base_color", "roughness", "metallic"), constants[:3], strict=True))
     for role, image in images.items():
+        if role == "normal" and constants[3]:
+            continue
+        if role != "normal" and values[role] is not None:
+            socket = shader.inputs["Base Color" if role == "base_color" else _SCALARS[role]]
+            socket.default_value = (*values[role], 1) if role == "base_color" else values[role]
+            continue
         texture = material.node_tree.nodes.new("ShaderNodeTexImage")
         texture.image = image
         if role == "normal":
@@ -633,10 +656,58 @@ def _portable_material(material, images, uv_name):
     return material
 
 
+def _assign_portable_materials(meshes, images, uv_name, name, preserve, owned_outputs):
+    groups, records = {}, []
+    for obj in meshes:
+        original_slots = list(obj.data.materials)
+        original_indices = [face.material_index for face in obj.data.polygons]
+        slots, remap = [], {}
+        for index, original in enumerate(original_slots):
+            key = _constant_key(original) if preserve else (None, None, None, False)
+            if key not in groups:
+                material = bpy.data.materials.new(name if not groups else f"{name}_{len(groups)}")
+                owned_outputs.append(material)
+                _portable_material(material, images, uv_name, key)
+                groups[key] = material
+                records.append(
+                    {
+                        "material": material.name,
+                        "base_color": key[0],
+                        "roughness": key[1],
+                        "metallic": key[2],
+                        "normal": "geometry" if key[3] else "atlas",
+                    }
+                )
+            material = groups[key]
+            if material not in slots:
+                slots.append(material)
+            remap[index] = slots.index(material)
+        obj.data.materials.clear()
+        for material in slots:
+            obj.data.materials.append(material)
+        for face, original_index in zip(obj.data.polygons, original_indices, strict=True):
+            face.material_index = remap[original_index]
+    return records
+
+
 def bake_material_atlas(params, context=None):
     context = context or bpy.context
     p = parse_atlas_request(params)
     sources, input_images, image_bytes = _admit(p, context)
+    group_count = (
+        len(
+            {
+                _constant_key(slot.material)
+                for obj in sources
+                if obj.type == "MESH"
+                for slot in obj.material_slots
+            }
+        )
+        if p["preserve_material_constants"]
+        else 1
+    )
+    if group_count > 256:
+        raise ValueError("Constant preservation exceeds 256 material groups")
     counts = _evaluated_counts(sources, context)
     if (
         counts["vertices"] > p["max_evaluated_vertices"]
@@ -646,6 +717,10 @@ def bake_material_atlas(params, context=None):
     result = {
         **p,
         "source_objects": sorted(obj.name for obj in sources),
+        "material_policy": "literal_constant_groups"
+        if p["preserve_material_constants"]
+        else "single_baked",
+        "maximum_material_groups": group_count,
         "evaluated_geometry": counts,
         "input_image_decoded_bytes": image_bytes,
         "input_images": sorted(image.name for image in input_images),
@@ -656,13 +731,17 @@ def bake_material_atlas(params, context=None):
             "Modifiers frozen on derivatives; source UV layers retained",
             "No external output files; four packed PNG maps",
             "Image estimates exclude geometry, renderer, driver and process allocations",
+            "More bake samples increase shading work; image estimates do not cap runtime or process memory",
+            "Mip padding planning covers the declared box-filter range only; native filtering, compression and wider kernels require review",
+            "Constant preservation may create multiple materials; four packed maps are retained",
             "No visual or native-game acceptance",
         ],
     }
     if p["dry_run"]:
         return result
     owned_objects, owned_meshes, owned_materials, owned_images = [], [], [], []
-    stage = collection = output_material = None
+    output_materials = []
+    stage = collection = None
     success = False
     source_scene = context.scene
     window = context.window
@@ -672,7 +751,11 @@ def bake_material_atlas(params, context=None):
         stage = bpy.data.scenes.new(p["name"] + "_BakeStage")
         stage.render.engine = "CYCLES"
         stage.cycles.device = "CPU"
-        stage.cycles.samples = 1
+        stage.cycles.samples = p["bake_samples"]
+        stage.cycles.seed = 0
+        stage.cycles.use_animated_seed = False
+        stage.cycles.use_adaptive_sampling = False
+        stage.cycles.use_denoising = False
         stage.render.threads_mode = "FIXED"
         stage.render.threads = 4
         stage.render.bake.use_clear = True
@@ -721,6 +804,18 @@ def bake_material_atlas(params, context=None):
         meshes = [copy for copy in owned_objects if copy.type == "MESH"]
         _unwrap(stage, meshes, uv_name, p["margin"], p["resolution"])
         uv_evidence = _uv_evidence(meshes, uv_name, p["resolution"], p["margin"])
+        if p["mip_padding"]["state"] == "planned":
+            required = p["margin"]
+            for field, minimum in {
+                "minimum_chart_gap_px_lower_bound": 2 * required,
+                "minimum_tile_border_px": required,
+            }.items():
+                value = uv_evidence[field]
+                if not math.isfinite(value) or value + 0.001 < minimum:
+                    raise ValueError(
+                        f"Packed atlas does not provide requested mip padding: {field}"
+                    )
+            result["mip_padding"] = {**p["mip_padding"], "state": "packing_verified"}
         maps = {}
         images = {}
         for role in p["map_roles"]:
@@ -736,23 +831,35 @@ def bake_material_atlas(params, context=None):
             _bake_pass(stage, meshes, image, role, p["margin"])
             maps[role] = _pack_png(image, role)
             images[role] = image
-        output_material = bpy.data.materials.new(p["name"] + "_Material")
-        _portable_material(output_material, images, uv_name)
         _primary_atlas_uv(meshes, uv_name)
-        for obj in meshes:
-            obj.data.materials.clear()
-            obj.data.materials.append(output_material)
-            for face in obj.data.polygons:
-                face.material_index = 0
+        material_groups = _assign_portable_materials(
+            meshes,
+            images,
+            uv_name,
+            p["name"] + "_Material",
+            p["preserve_material_constants"],
+            output_materials,
+        )
         source_scene.collection.children.link(collection)
         for obj in owned_objects:
             obj.hide_render = True
             obj.hide_viewport = True
         result.update(
+            effective_sampling={
+                "engine": stage.render.engine,
+                "device": stage.cycles.device,
+                "samples": stage.cycles.samples,
+                "seed": stage.cycles.seed,
+                "animated_seed": stage.cycles.use_animated_seed,
+                "adaptive_sampling": stage.cycles.use_adaptive_sampling,
+                "denoising": stage.cycles.use_denoising,
+            },
             objects=sorted(obj.name for obj in owned_objects),
             derivatives={source.name: copy.name for source, copy in mapping.items()},
             collection=collection.name,
-            material=output_material.name,
+            material=output_materials[0].name if len(output_materials) == 1 else None,
+            materials=[material.name for material in output_materials],
+            material_groups=material_groups,
             uv_layer=uv_name,
             maps=maps,
             hidden=True,
@@ -769,8 +876,8 @@ def bake_material_atlas(params, context=None):
                 bpy.data.objects.remove(obj, do_unlink=True)
             for mesh in owned_meshes:
                 bpy.data.meshes.remove(mesh)
-            if output_material:
-                bpy.data.materials.remove(output_material)
+            for material in output_materials:
+                bpy.data.materials.remove(material)
             for image in owned_images:
                 bpy.data.images.remove(image)
         for material in owned_materials:

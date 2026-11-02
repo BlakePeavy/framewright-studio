@@ -17,6 +17,7 @@ def test_defaults_keep_explicit_part_order_and_do_not_modify_request():
     assert result["name"] == "FW_MaterialAtlas"
     assert result["resolution"] == 1024
     assert result["margin"] == 8
+    assert result["bake_samples"] == 16
     assert result["max_evaluated_vertices"] == 250_000
     assert result["max_evaluated_triangles"] == 100_000
     assert result["map_roles"] == ["base_color", "roughness", "metallic", "normal"]
@@ -31,6 +32,16 @@ def test_defaults_keep_explicit_part_order_and_do_not_modify_request():
     )
     assert result["native_process_memory_bounded"] is False
     assert request == before
+
+
+@pytest.mark.parametrize("samples", [1, 16, 64])
+def test_explicit_sampling_preserves_existing_memory_and_geometry_budgets(samples):
+    result = parse_atlas_request({"object_names": ["Part"], "bake_samples": samples})
+    assert result["bake_samples"] == samples
+    assert result["estimated_image_working_bytes"] == 136 * 1024**2
+    assert result["max_evaluated_vertices"] == 250_000
+    assert result["max_evaluated_triangles"] == 100_000
+    assert result["native_process_memory_bounded"] is False
 
 
 @pytest.mark.parametrize(
@@ -62,6 +73,12 @@ def test_requires_explicit_bounded_unique_scope_and_known_contract(params):
         ("resolution", 64.0),
         ("resolution", 63),
         ("resolution", 8193),
+        ("bake_samples", True),
+        ("bake_samples", False),
+        ("bake_samples", 16.0),
+        ("bake_samples", 0),
+        ("bake_samples", 65),
+        ("bake_samples", "16"),
         ("margin", -1),
         ("margin", 65),
         ("margin", False),

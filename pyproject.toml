@@ -1,6 +1,6 @@
 [project]
 name = "framewright-studio"
-version = "0.8.0"
+version = "0.9.0"
 description = "AI-friendly Blender production checks and source-preserving workflows"
 requires-python = ">=3.11"
 license = "GPL-3.0-or-later"

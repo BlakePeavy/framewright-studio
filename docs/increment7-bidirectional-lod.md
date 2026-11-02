@@ -4,7 +4,7 @@ On 2026-10-30, a deliberately missing thin fin reproduced a gap in the original 
 
 ## Contract and compatibility
 
-`lod.compare_surface` keeps the same request (`source_name`, `candidate_name`, optional `max_samples`). The response now identifies schema `1.1` and contains:
+The public `mesh.compare_surface` command (`framewright.lod.compare_surface` in code) keeps the same request (`source_name`, `candidate_name`, optional `max_samples`). The response now identifies schema `1.1` and contains:
 
 - `candidate_to_source` and `source_to_candidate`: maximum and mean distance, sampled/omitted vertex counts, target triangle count, deterministic sampling rule, and the largest measured sample with its nearest surface point.
 - `bidirectional`: the greater directional maximum and a combined mean weighted by sampled vertex count. This mean is not weighted by surface area.
@@ -50,3 +50,7 @@ Run the normal tests with:
 ```
 
 Append `-- --render-review` to create another uniquely named review folder under `artifacts/lod-review`, or add `--output-dir <folder>` to select its parent. Rendering is optional; the 12 automated regressions run without it. Static synthetic views do not establish artist acceptance, temporal stability, or a native-engine pass.
+
+The later [convex hull correction](native-derivative-handoff.md) adds a disconnected-part
+regression and removes internal faces from collision derivatives. The retained native
+probe still fails explicit LOD/collision assignment; the original art/runtime limits remain.

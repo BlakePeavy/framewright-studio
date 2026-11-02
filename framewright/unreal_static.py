@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import contextlib
 import importlib
+import math
 import os
 import re
 
@@ -78,6 +79,7 @@ class UnrealStaticBackend:
         )
         self.library = self.u.EditorAssetLibrary
         self.owned_root = None
+        self.texture_readiness = None
 
     def _dirty(self):
         library = self.u.EditorLoadingAndSavingUtils
@@ -89,7 +91,12 @@ class UnrealStaticBackend:
         )
 
     def context(self):
-        project = _path(self.u.Paths.get_project_file_path())
+        # UE may return its own project path relative to the engine BaseDir.
+        # Normalize only this trusted API result, then retain local-path checks
+        # and the exact authorized target identity. Caller paths stay strict.
+        project = _path(
+            self.u.Paths.convert_relative_path_to_full(self.u.Paths.get_project_file_path())
+        )
         _require(
             project == self.root / "Source/SundownRunUnreal/SundownRun.uproject",
             "Active Unreal project is not the explicit target",
@@ -155,21 +162,40 @@ class UnrealStaticBackend:
         )
 
     def import_scene(self, source, root):
+        _require(self.lease and self.lease["held"], "Import requires an active owner lease")
         _require(
             self.owned_root and root == self.owned_root + "/Assets",
             "Import destination differs from owned root",
         )
         _path(source)
+        bridge = getattr(self.u, "FramewrightImportLibrary", None)
+        _require(
+            bridge is not None,
+            "Full-precision import requires the FramewrightNativeBridge 0.2 editor plugin",
+        )
+        pipeline = bridge.create_full_precision_gltf_pipeline()
+        _require(
+            isinstance(pipeline, self.u.InterchangeGenericAssetsPipeline)
+            and pipeline.get_outermost().get_name() == "/Engine/Transient",
+            "Import bridge returned an invalid or non-transient pipeline",
+        )
+        properties = pipeline.get_editor_property("common_meshes_properties")
+        _require(
+            properties is not None and properties.get_editor_property("use_full_precision_u_vs"),
+            "Import pipeline does not request full UV precision",
+        )
         parameters = self.u.ImportAssetParameters()
         parameters.set_editor_property("is_automated", True)
         parameters.set_editor_property("replace_existing", False)
         parameters.set_editor_property("follow_redirectors", False)
         parameters.set_editor_property("force_show_dialog", False)
         parameters.set_editor_property("import_level", self.levels.get_current_level())
-        # Exact installed BaseEngine.ini SceneImportSettings GLTF override stack.
+        # Fixed installed GLTF stack, with only the mesh pipeline copied in memory
+        # to request full UV precision. Keep the copy alive through synchronous import.
         # The plan cannot supply custom pipeline classes, assets or Python.
         parameters.set_editor_property(
-            "override_pipelines", [self.u.SoftObjectPath(path) for path in PIPELINES]
+            "override_pipelines",
+            [self.u.SoftObjectPath(path) for path in (pipeline.get_path_name(), *PIPELINES[1:])],
         )
         manager = self.u.InterchangeManager.get_interchange_manager_scripted()
         data = self.u.InterchangeManager.create_source_data(source)
@@ -205,11 +231,52 @@ class UnrealStaticBackend:
             if not isinstance(cursor, self.u.MaterialInstance):
                 return bool(cursor.get_editor_property("two_sided"))
             overrides = cursor.get_editor_property("base_property_overrides")
-            if overrides.override_two_sided:
-                return bool(overrides.two_sided)
+            if overrides.get_editor_property("override_two_sided"):
+                return bool(overrides.get_editor_property("two_sided"))
             cursor = cursor.get_editor_property("parent")
             _require(cursor is not None, "Missing native material parent")
         raise ValueError("Material inheritance depth exceeds budget")
+
+    def _finish_owned_textures(self, textures):
+        """Complete only validated owned texture builds before platform readback."""
+        _require(
+            self.lease and self.lease["held"], "Texture readiness requires an active owner lease"
+        )
+        _require(len(textures) <= 4096, "Texture readiness batch exceeds budget")
+        paths = []
+        for texture in textures:
+            _require(
+                isinstance(texture, self.u.Texture2D)
+                and texture.get_path_name().startswith(self.owned_root + "/Assets/"),
+                "Unexpected/foreign texture asset",
+            )
+            paths.append(texture.get_path_name())
+        _require(len(set(paths)) == len(paths), "Duplicate texture readiness identity")
+        result = {
+            "scope": "owned_texture_platform_data",
+            "texture_count": len(textures),
+            "pending_before": 0,
+            "pending_after": 0,
+            "ready": True,
+        }
+        if not textures:
+            return result
+        bridge = getattr(self.u, "FramewrightTextureLibrary", None)
+        _require(
+            bridge is not None,
+            "Texture readiness requires the FramewrightNativeBridge editor plugin",
+        )
+        observed = bridge.finish_owned_textures(textures, self.owned_root)
+        _require(
+            observed.ready
+            and not observed.error
+            and observed.texture_count == len(textures)
+            and 0 <= observed.pending_before <= len(textures)
+            and observed.pending_after == 0,
+            "Owned texture compilation readiness failed: " + str(observed.error),
+        )
+        result.update(pending_before=int(observed.pending_before))
+        return result
 
     def _observe_surfaces(self, plan, material_assets, texture_assets):
         """Read native properties; no source values copied as observations.
@@ -230,6 +297,7 @@ class UnrealStaticBackend:
             and set(texture_by_name) == {t["name"] for t in expected["textures"]},
             "Imported texture identities differ",
         )
+        self.texture_readiness = self._finish_owned_textures(texture_assets)
         textures, texture_indexes = [], {}
         for index, wanted in enumerate(expected["textures"]):
             texture = texture_by_name[wanted["name"]]
@@ -368,6 +436,13 @@ class UnrealStaticBackend:
             )
         return names
 
+    def _mesh_precision(self, mesh):
+        settings = self.u.get_editor_subsystem(self.u.StaticMeshEditorSubsystem)
+        _require(settings is not None, "Native mesh build settings unavailable")
+        full = settings.get_lod_build_settings(mesh, 0).get_editor_property("use_full_precision_u_vs")
+        _require(full, "Native mesh does not retain full UV precision")
+        return {"mesh": mesh.get_path_name(), "lod": 0, "full_precision_uvs": True}
+
     def inspect_import(self, plan):
         _require(plan["package_root"] == self.owned_root, "Unexpected inspection root")
         actual_actors = [
@@ -379,15 +454,12 @@ class UnrealStaticBackend:
             _require(label not in by_label, "Duplicate imported actor label")
             by_label[label] = actor
         wanted = plan["geometry"]
-        _require(
-            set(by_label) == {n["name"] for n in wanted["nodes"]},
-            "Imported actor identities include missing/renamed/extra nodes; native hierarchy unverified",
-        )
-        nodes, mesh_rows, mesh_paths = [], {}, {}
+        container = self._scene_container(by_label, wanted)
+        nodes, mesh_rows, mesh_paths, mesh_precision = [], {}, {}, {}
         for expected in wanted["nodes"]:
             actor = by_label[expected["name"]]
             parent = actor.get_attach_parent_actor()
-            component = actor.get_root_component()
+            component = self._root_component(actor)
             _require(component is not None, "Imported actor has no root component")
             components = actor.get_components_by_class(self.u.StaticMeshComponent)
             index = expected["mesh"]
@@ -411,6 +483,7 @@ class UnrealStaticBackend:
                         "Shared mesh identity was split unexpectedly",
                     )
                 mesh_paths[index] = mesh.get_path_name()
+                mesh_precision[index] = self._mesh_precision(mesh)
                 bounds = mesh.get_bounding_box()
                 mesh_rows[index] = {
                     "triangles": int(mesh.get_num_triangles(0)),
@@ -422,7 +495,7 @@ class UnrealStaticBackend:
             nodes.append(
                 {
                     "name": expected["name"],
-                    "parent": parent.get_actor_label() if parent else None,
+                    "parent": parent.get_actor_label() if parent and parent != container else None,
                     "mesh": index,
                     "local_matrix_cm": self._matrix(component.get_relative_transform()),
                     "world_matrix_cm": self._matrix(actor.get_actor_transform()),
@@ -450,17 +523,72 @@ class UnrealStaticBackend:
                 texture_assets.append(obj)
         # Preserve material order from source, but require the actual exact set.
         _require(material_names == set(wanted["materials"]), "Imported material identity mismatch")
+        surfaces = self._observe_surfaces(plan, material_assets, texture_assets)
         return {
             "geometry": {
+                "scene_name": container.get_actor_label() if container else None,
                 "nodes": nodes,
                 "meshes": meshes,
                 "mesh_count": len(meshes),
                 "triangles": sum(m["triangles"] for m in meshes),
                 "materials": wanted["materials"],
             },
-            "surfaces": self._observe_surfaces(plan, material_assets, texture_assets),
+            "surfaces": surfaces,
+            "texture_readiness": self.texture_readiness,
+            "mesh_precision": [mesh_precision[i] for i in range(len(meshes))],
             "packages": packages,
         }
+
+    @staticmethod
+    def _root_component(actor):
+        # AActor::GetRootComponent is not reflected. UE exposes the property.
+        return actor.root_component
+
+    def _scene_container(self, by_label, wanted):
+        """Validate the GLTF scene actor; normalize only this inert hierarchy level.
+
+        The container stays in the level. No actors are deleted, renamed or moved.
+        Every source node, parent and transform is still checked independently.
+        """
+        expected = {n["name"] for n in wanted["nodes"]}
+        if set(by_label) == expected:
+            return None
+        scene_name = wanted.get("scene_name")
+        _require(
+            scene_name is not None
+            and scene_name not in expected
+            and set(by_label) == expected | {scene_name},
+            "Imported actor identities include missing/renamed/extra nodes; native hierarchy unverified",
+        )
+        container = by_label[scene_name]
+        component = self._root_component(container)
+        _require(
+            container.get_class() == self.u.Actor.static_class()
+            and container.get_path_name().startswith(
+                self.owned_root + "/Maps/Staging.Staging:PersistentLevel."
+            )
+            and container.get_attach_parent_actor() is None
+            and component is not None
+            and component.get_class() == self.u.SceneComponent.static_class()
+            and list(container.get_components_by_class(self.u.SceneComponent)) == [component],
+            "GLTF scene container must be an owned plain actor with one empty root",
+        )
+        matrix = self._matrix(container.get_actor_transform())
+        _require(
+            all(
+                math.isfinite(value) and abs(value - float(i == j)) <= 1e-6
+                for i, row in enumerate(matrix)
+                for j, value in enumerate(row)
+            ),
+            "GLTF scene container transform must be identity",
+        )
+        for node in wanted["nodes"]:
+            expected_parent = by_label[node["parent"]] if node["parent"] else container
+            _require(
+                by_label[node["name"]].get_attach_parent_actor() == expected_parent,
+                "GLTF scene container hierarchy differs from source roots/parents",
+            )
+        return container
 
     def save(self, packages, level):
         _require(
