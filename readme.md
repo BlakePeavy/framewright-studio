@@ -1,8 +1,14 @@
 # Framewright Studio
 
-AI-friendly **Blender plug-in** for modeling, rigging, animation, materials and
-lighting, targeting independently reviewed AAA quality with flexible cinematic/8K
-and real-time budgets. Sundown's unfinished art is not the quality benchmark.
+AI-friendly **Blender utility toolkit**. Retained scope, agreed November 5, 2026:
+
+- Asset checks and diagnostics.
+- Source protection and isolated jobs.
+- Export and baking utilities.
+
+Broader modeling, character and studio-parity work remains inactive. Existing
+implementations and evidence are preserved; this scope decision does not remove
+code or change the sealed release. Further work should serve these utilities.
 
 **Current scope: Blender only.** Unreal and Sundown integration are deferred and
 are not release requirements. Earlier engine experiments remain historical
@@ -10,6 +16,9 @@ evidence; do not launch or extend them without a new explicit request. Unreal is
 not required to install or use the Blender extension.
 
 ## Verified delivery
+
+Artifact and package links below refer to the populated local checkout.
+`artifacts/` and `dist/` are ignored by Git and are not included in source pushes.
 
 [0.9.0 engineering preview ZIP](dist/framewright_studio-0.9.0.zip): 84 aggregate
 stages, 71 Blender suites, all 830 standalone Python cases across the initial run
@@ -22,11 +31,42 @@ without internal source faces; its new regression and two affected checks pass.
 regressions and retains all affected fold checks. Blender verifies 11.9% lower
 worst contact deficit; 20 contact failures still prevent character acceptance.
 
-[Blue Horizon](artifacts/blue-horizon-20261030/readme.md) is a separate editable
-30-second carrier launch scene, with 720p video and a 4K still. Blender scripts
-authored it; Framewright inspected and validated it.
+**Plug-in development remains paused.** The current art delivery is the
+[30-second Nimitz launch animation](artifacts/carrier-animation-20261104/README.md):
+a verified 1920x1080, 24 fps H.264 video, packed Blender scene and review stills.
+The user accepted c22 quality for animation; **photographic acceptance remains
+false**. Two sequential bow launches use the complete N4 aircraft; the detailed
+Hornet forebody remains a separate still asset. The
+[heading audit](artifacts/carrier-animation-20261104/heading-audit.md) records
+alignment and layout limits, and the
+[animation audit](artifacts/carrier-animation-20261104/animation-audit.md) records
+Framewright gaps and rendering costs. Source PNGs remain in the workspace.
+The [carrier/Hornet detail files](artifacts/carrier-detail-20261104/README.md),
+[h16 study](artifacts/hornet-hero-20261104/README.md), earlier Nimitz and Blue
+Horizon II scenes, and sealed 0.9 release remain preserved. Blender only;
+no Unreal or Sundown changes or aggregate plug-in suite.
 
-## Implemented and remaining
+The [crew and tractor revision](artifacts/carrier-crew-20261104/README.md)
+adds one rigged character master, seven independently posed role variants
+and three detailed support tractors. Scene and still previews are saved;
+the existing MP4 is unchanged. Close-up clothing fidelity remains below
+the approved photorealistic concept. Focused native checks and Framewright
+gaps are recorded with the assets; no aggregate plug-in suite was run.
+
+The [refined crew checkpoint](artifacts/crew-hero-20261104/README.md) adds a rebuilt
+master and seven carrier crew sharing geometry with independent rigs and colors.
+All three native scenes reopen, and focused geometry, binding, contact and
+instance checks pass; photographic fidelity remains below the concept.
+Actual stills, packed CC0 textures and Framewright gaps accompany the scenes.
+Crew poses remain static, the MP4 is unchanged, and plug-in development is paused.
+
+The [usefulness audit](docs/library-value-audit-20261105.md) finds real value in
+bounded asset checks, source protection and handoff tools, but no demonstrated
+benefit for the latest crew modeling or photographic quality. Those edits and
+checks used custom Blender scripts. Keep broad development paused until an
+equivalent-task comparison demonstrates practical savings; no code is removed.
+
+## Existing implementation inventory
 
 - Modeling: evaluated topology, UV/material diagnostics, cabinet/facade builders,
   LOD/collision derivatives, normal/atlas baking and flexible profiles.
@@ -37,10 +77,10 @@ authored it; Framewright inspected and validated it.
 - AI access: validated JSON commands, gated workflows, owned background jobs and
   optional local MCP. See [59-command inventory](docs/tool-inventory.md).
 
-These are bounded production-assistance tools. Remaining Blender work includes
-character deformation, representative motion/contacts, source material fidelity,
-lighting calibration, performance and artistic review. 8K output and technical
-checks do not establish finished art or studio parity. See the [roadmap](docs/roadmap.md).
+This inventory includes preserved functionality outside the retained scope.
+Unfinished character, modeling and artistic-quality work is historical backlog,
+not a completion requirement for the utility toolkit. Technical checks and 8K
+output do not certify finished art. See the [roadmap](docs/roadmap.md).
 
 ## Develop and verify
 
@@ -66,5 +106,4 @@ Install the verified ZIP through Blender Preferences → Get Extensions → Inst
 from Disk, then open the 3D View sidebar → **Framewright**. Mutation defaults to
 preview. See [AI API](docs/ai-api.md) and [MCP setup](docs/increment3-ai.md).
 
-Keep this README brief and current. No remote publication or Sundown edits have
-been made by this task. GPL-3.0-or-later.
+Keep this README brief and current. Sundown remains unchanged. GPL-3.0-or-later.

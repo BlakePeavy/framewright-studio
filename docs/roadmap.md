@@ -1,12 +1,19 @@
 # Framewright Studio roadmap
 
-Owner: Blake. Started 2026-10-30. **Development continues** after the separate Blue Horizon carrier cinematic. The verified 0.9 engineering preview passes 84 stages, 71 Blender suites and all 830 latest-host Python cases across the initial run and focused setup rechecks. The target is independently reviewed AAA production quality with configurable cinematic/8K and real-time budgets. Sundown's development art is not the benchmark.
+**Retained scope, user decision November 5, 2026:** asset checks; source
+protection and isolated jobs; export and baking utilities. Broader modeling,
+character and AAA/studio-parity work remains inactive. The board below retains
+historical implementation/evidence states; its broader unfinished rows are not
+completion requirements for the retained toolkit. No code or release files were
+removed by this scope decision. Development remains paused.
+
+Owner: Blake. Started 2026-10-30. **Development is paused at the user's request** while the separate scratch-built Nimitz cinematic is developed; its current visual draft is not accepted as photorealistic. The verified 0.9 engineering preview passes 84 stages, 71 Blender suites and all 830 latest-host Python cases across the initial run and focused setup rechecks. The original target was independently reviewed AAA production quality with configurable cinematic/8K and real-time budgets. Sundown's development art is not the benchmark.
 
 **Scope correction, 2026-11-01:** this project is strictly a Blender plug-in.
 Unreal/Sundown work (FW-070–073) is deferred and excluded from completion gates.
 Do not resume engine testing using the earlier approval. Preserve historical
 experiments; no additional native integration is required for this release.
-Active board: 21 Done, 16 Partial, one Pending; four destination rows Deferred.
+Historical board: 21 Done, 16 Partial, one Pending; four destination rows Deferred.
 
 **Verified 0.8 increment:** shared procedural-to-PBR atlas baking and cold hidden-object review.
 The separate native static adapter has passing offline contracts. The atlas command has 61 pure/schema
@@ -30,6 +37,12 @@ latest-host Python 3.15.2 validation are complete. Promotion and the 281-file so
 checkpoint are sealed; these checks do not close the production/artistic rows below.
 
 An artist or AI agent should inspect an asset, identify a concrete defect, propose a bounded change, retain the source, review an editable derivative and deliver reproducible handoff evidence. Technical validity, reference fidelity, deformation/motion, Blender export/reimport parity, rendered appearance and Blender performance are independent gates. Neither a numeric score nor texture resolution grants artistic acceptance.
+
+**Value review, 2026-11-05:** the [usefulness audit](library-value-audit-20261105.md)
+records attribution, visual-gate, compatibility and durability findings F24–F28.
+It recommends preserving narrow utilities and keeping broader development paused
+until an equivalent-task comparison shows benefit. These findings do not open
+new implementation tasks or promote any incomplete production row.
 
 ## Delivery and status
 
@@ -82,7 +95,9 @@ Delivery proceeds through foundation → diagnostics → bounded repairs → mod
 | FW-082 | Done | Verified GPL 0.9 preview: 84 stages on 210 unchanged files, latest-host validation, package byte audit and sealed 281-file Git source archive | Later code changes require a new verified release; production 1.0 is FW-083 |
 | FW-083 | Pending | Acceptance rubric and independent gate model | Artist acceptance, Blender performance targets, issue triage and support ownership; production 1.0 is not claimed |
 
-## Executable next work
+## Historical followups (inactive)
+
+These earlier priorities are retained for context, not queued for execution.
 
 | Priority / dependency | Next bounded outcome | Required evidence |
 |---|---|---|
@@ -93,8 +108,8 @@ Delivery proceeds through foundation → diagnostics → bounded repairs → mod
 | 5 — FW-030–033/042/043; after corrected body fit | Add authored hand/face/eye controls, protected corrective shapes and representative motion | Named intended behaviors, joint/contact failure controls, reversible derivatives, cold handoff and artist-reviewed improvement |
 | 6 — FW-014/062; representative assets from preceding rows | Expand technical corpus and performance evidence | Versioned cases, preserved-source hashes, expected failures, repeated timings, actual cost or unknown, texture/rig/instance workload coverage |
 
-Next work stays inside Blender: use the existing material/deformation evidence
-to choose a bounded defect, write its failing check, fix it and inspect the result.
+If development is resumed, choose a bounded defect within the retained Blender
+utility scope, write its failing check, fix it and inspect the result.
 Reuse existing exports and renders; do not rerun full suites or 8K bakes without a
 milestone or concrete regression. Earlier engine findings remain historical under
 FW-070–073 and do not block Blender delivery. The native derivative assignment
@@ -186,7 +201,7 @@ retains three at 130°. Both failed their first geometry gate; no new asset,
 files remained unchanged. Copies and original hashes are retained in the
 [0.8 evidence receipt](../artifacts/evidence-retention-0.8.json).
 
-Development paused for Blue Horizon and has resumed with FW-053. The
+At that checkpoint, development resumed after Blue Horizon with FW-053. The
 [pause findings](paused-scene-findings.md) preserve the curve/text reporting failure
 and the artwork's temporary converted-mesh workaround. The
 [resource correction](increment14-resource-accounting.md) passes on the unchanged
@@ -218,4 +233,4 @@ requirements. Other OS/Blender support requires execution in those environments.
 - Keep original sources and earlier evidence. Do not silently treat newer generated output as the accepted production asset.
 - Measure before optimizing. Separate extraction, rule evaluation, I/O, Python allocations, native memory and GPU/runtime counters; avoid universal triangle/texture/FPS thresholds.
 
-The 0.7 line is a production-assistance developer preview. It does not replace artists, certify studio parity or imply that all roadmap acceptance is complete.
+The verified 0.9 release is an engineering preview. It does not replace artists, certify studio parity or imply that all roadmap acceptance is complete.

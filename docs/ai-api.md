@@ -19,11 +19,13 @@ The API also includes [shape-key bake and coupled morph handoff](increment8-morp
 [evaluated skin contacts](increment10-skin-contacts.md),
 [interior/glass review fixtures](increment10-interior-glass.md), and
 [EXR data-map intake](increment10-exr-intake.md). These remain bounded commands;
-use the exact **verified 0.7 ZIP in [verification](verification.md)** for installation.
-Its resource-qualified aggregate passes 77 stages, 582 Python tests and 64 Blender
-suites; the separate Python 3.13.11 matrix also passes all 582 tests. Source-checkpoint
-finalization remains pending. The [tool inventory](tool-inventory.md) lists all
-58 commands, six profiles and the configured/pure-only MCP wrappers.
+use the **verified 0.9.0 ZIP in [verification](verification.md)** for installation.
+The [tool inventory](tool-inventory.md) lists 59 commands, six profiles and the
+configured/pure-only MCP wrappers. The recorded release checks are historical;
+ongoing standalone development targets Python 3.15.2 only, alongside Blender's
+bundled runtime. Later checkout changes do not alter the sealed release ZIP.
+The [usefulness audit](library-value-audit-20261105.md) distinguishes actual
+workflow value from unproven artistic capabilities; development remains paused.
 The [editable-geometry resource correction](increment14-resource-accounting.md)
 is now verified; [pause findings](paused-scene-findings.md) preserve the original
 failure and temporary converted-scene workaround as historical evidence.
@@ -127,7 +129,7 @@ LOD comparison now reports [both sampled directions](increment7-bidirectional-lo
 while retaining its prior forward fields. These technical results grant no artistic
 or native-engine acceptance.
 
-The 0.8 development candidate adds `surfaces.bake_material_atlas` for supported
+Introduced in 0.8, `surfaces.bake_material_atlas` handles supported
 static opaque Principled materials. The [build→atlas→review example](../examples/build-atlas-review.json)
 binds exact part names between steps and defaults to whole-workflow preview. Setting
 the workflow's `dry_run` to `false` creates an editable cabinet, hidden atlas derivatives
@@ -136,8 +138,8 @@ documents image budgets, unsupported semantics and cold-handoff evidence. The
 [sampling extension](atlas-sampling.md) adds integer `bake_samples` (1–64, default 16);
 explicit 1 selects the faster single-sample behavior. Applied results expose actual
 `effective_sampling`; preview does not claim execution. Extra samples increase work
-without changing image budgets or guaranteeing visual acceptance. The command does
-not grant artistic acceptance or imply that the 0.8 package has passed final verification.
+without changing image budgets or guaranteeing visual acceptance. See
+[verification](verification.md) for the sealed 0.9 release evidence and limits.
 
 In a source checkout, on Blender's main thread:
 
