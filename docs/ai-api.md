@@ -24,11 +24,9 @@ The [tool inventory](tool-inventory.md) lists 59 commands, six profiles and the
 configured/pure-only MCP wrappers. The recorded release checks are historical;
 ongoing standalone development targets Python 3.15.2 only, alongside Blender's
 bundled runtime. Later checkout changes do not alter the sealed release ZIP.
-The [usefulness audit](library-value-audit-20261105.md) distinguishes actual
-workflow value from unproven artistic capabilities; development remains paused.
-The [editable-geometry resource correction](increment14-resource-accounting.md)
-is now verified; [pause findings](paused-scene-findings.md) preserve the original
-failure and temporary converted-scene workaround as historical evidence.
+See [supported scope and limitations](limitations.md) for preservation, recovery
+and asset coverage. The [editable-geometry resource correction](increment14-resource-accounting.md)
+documents evaluated mesh accounting for curve/text and mixed geometry sources.
 The 0.5 additions are [B-Bone endpoint baking and explicit fractional
 export sampling](increment9-bbone-handoff.md), with [independent source-preservation
 checks](increment11-animation-review.md). [Construction](increment11-cabinet-construction.md)

@@ -285,9 +285,8 @@ The [resource accounting correction](increment14-resource-accounting.md) passed
 ten new Blender tests and nine independent review tests. Original mesh counts remain
 separate from converted-source counts; evaluated mesh components and generated
 material references are counted without duplicating implicit projections. Unmeasured
-non-mesh components are explicit. The original editable carrier scene now reports
-**458,951 triangles** at both frames 1 and 330 without conversion, saving or source
-changes. [Region authoring](increment13-region-authoring.md) and its cold human
+non-mesh components are explicit. Editable mixed-source checks preserve original
+data without conversion or saving. [Region authoring](increment13-region-authoring.md) and its cold human
 round-trip also remain covered. The [inventory](tool-inventory.md) lists all 58 API
 commands; these checks do not grant artistic, native-engine or production acceptance.
 
@@ -325,8 +324,8 @@ on 3.11.15, 62 isolated Blender suites, packaging/byte audit, actual
 **0.6→0.7→0.6→0.7** installed lifecycle, batch and worker checks. All **186
 source/config files remained unchanged**. Source snapshot SHA256:
 `227a863eab0b21d23a719cef1733592c77b2019ae0b1f9cbeb8efab9a77904db`.
-This run finished during the Blue Horizon development pause. At that point, a final
-secondary-version matrix and sealed 0.7 source checkpoint were not completed, and
+At that checkpoint, a final secondary-version matrix and sealed 0.7 source
+checkpoint were not completed, and
 0.6 remained the install recommendation. The resource-qualified 0.7 ZIP above now
 supersedes that recommendation; this older receipt does not cover the later correction.
 
@@ -347,9 +346,8 @@ and package-version reporting also have passing regressions. A separate interrup
 environment attempt remains [superseded evidence](../artifacts/verification/release-0.7.0-environment-note.json);
 it must not be substituted for the restored-environment final receipt above.
 
-The [pause findings](paused-scene-findings.md) retain the actual `scene.resources`
-curve/text crash and the cinematic's temporary converted-scene workaround. The
-reporting defect is closed by the resumed evidence above. The separate knee-contour
+The [resource accounting correction](increment14-resource-accounting.md) resolves
+the `scene.resources` curve/text crash with the evidence above. The separate knee-contour
 study remains rejected: both finalists introduce new crossing identities despite
 reducing total intersection counts. The resource correction does not resolve that
 asset-quality finding.

@@ -7,7 +7,9 @@ historical implementation/evidence states; its broader unfinished rows are not
 completion requirements for the retained toolkit. No code or release files were
 removed by this scope decision. Development remains paused.
 
-Owner: Blake. Started 2026-10-30. **Development is paused at the user's request** while the separate scratch-built Nimitz cinematic is developed; its current visual draft is not accepted as photorealistic. The verified 0.9 engineering preview passes 84 stages, 71 Blender suites and all 830 latest-host Python cases across the initial run and focused setup rechecks. The original target was independently reviewed AAA production quality with configurable cinematic/8K and real-time budgets. Sundown's development art is not the benchmark.
+The current package is a 0.9 engineering preview. Historical engineering and
+acceptance records below describe the original broader scope; they do not change
+the retained utility scope or establish production readiness.
 
 **Scope correction, 2026-11-01:** this project is strictly a Blender plug-in.
 Unreal/Sundown work (FW-070–073) is deferred and excluded from completion gates.
@@ -38,11 +40,9 @@ checkpoint are sealed; these checks do not close the production/artistic rows be
 
 An artist or AI agent should inspect an asset, identify a concrete defect, propose a bounded change, retain the source, review an editable derivative and deliver reproducible handoff evidence. Technical validity, reference fidelity, deformation/motion, Blender export/reimport parity, rendered appearance and Blender performance are independent gates. Neither a numeric score nor texture resolution grants artistic acceptance.
 
-**Value review, 2026-11-05:** the [usefulness audit](library-value-audit-20261105.md)
-records attribution, visual-gate, compatibility and durability findings F24–F28.
-It recommends preserving narrow utilities and keeping broader development paused
-until an equivalent-task comparison shows benefit. These findings do not open
-new implementation tasks or promote any incomplete production row.
+See [supported scope and limitations](limitations.md) for current compatibility,
+preservation and recovery constraints. Further investment should be justified by
+measured benefit on a representative task, not command counts or test totals.
 
 ## Delivery and status
 
@@ -81,7 +81,7 @@ Delivery proceeds through foundation → diagnostics → bounded repairs → mod
 | FW-050 | Done | Scoped GLB/FBX exports; cold geometry/UV/pivot/skin/motion and bounded rendered material parity in both formats | Broader shader/rig export and Blender reimport cases remain separate gates |
 | FW-051 | Partial | Four-camera review scenes; actual decoded 8192² PNG; controlled linear/HDR/Standard/AgX exposure fixture with cold verification | Physical lighting/display calibration, full-resolution visual inspection and accepted lighting/artwork |
 | FW-052 | Partial | PBR recipes, actual 8K handoff, bounded EXR data intake/container checks, explicit FBX scalar staging, authored four-map 4K cabinet cold views and controlled interior/glass renders | Complete reference fidelity, broader Blender lighting and accepted art-light targets |
-| FW-053 | Partial | Evaluated mesh components from mesh/converted sources, actual instance counts, generated materials/images, explicit unmeasured components and LOD coverage; original carrier scene now passes with source preserved | Blender viewport/render residency, draw calls, CPU/GPU counters and representative budget approval |
+| FW-053 | Partial | Evaluated mesh components from mesh/converted sources, actual instance counts, generated materials/images, explicit unmeasured components and LOD coverage; editable mixed-source validation passes with source preserved | Blender viewport/render residency, draw calls, CPU/GPU counters and representative budget approval |
 | FW-060 | Done | Allowlisted workflows, strict response gates, output bindings, replay/partial-failure receipts and preview | Replay cache is process-local; workflows are not atomic; artistic gates cannot be inferred |
 | FW-061 | Done | Owned workers, deadlines/cancel, supplied-plan/replay providers and explicit worker-only stock Rigify opt-in | Explicit retry only; no cloud provider, credentials or automatic model generation |
 | FW-062 | Partial | Eight-case structural corpus plus two pinned retained assets/five operation groups, missing-UV/penetration controls, three-repeat timings and source hashes; repair ranking and explicit cost semantics | Broader production/provider corpus and independent artistic labels |
@@ -201,11 +201,9 @@ retains three at 130°. Both failed their first geometry gate; no new asset,
 files remained unchanged. Copies and original hashes are retained in the
 [0.8 evidence receipt](../artifacts/evidence-retention-0.8.json).
 
-At that checkpoint, development resumed after Blue Horizon with FW-053. The
-[pause findings](paused-scene-findings.md) preserve the curve/text reporting failure
-and the artwork's temporary converted-mesh workaround. The
-[resource correction](increment14-resource-accounting.md) passes on the unchanged
-editable scene at two frames, reporting 458,951 evaluated triangles without conversion.
+The FW-053 [resource correction](increment14-resource-accounting.md) handles
+editable curve/text sources without converting the original data. Focused
+regressions cover evaluated geometry, instancing and source preservation.
 
 ## External acceptance and conditional integration
 

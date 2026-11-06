@@ -48,24 +48,20 @@ Blender work runs in owned background jobs with explicit inputs and output locat
 
 ## Scope and remaining work
 
-Development is paused. The [usefulness audit](library-value-audit-20261105.md)
-finds bounded value in asset checks, source protection and handoff automation;
-the broad AAA authoring proposition remains unproven. A command's presence does
-not mean arbitrary production assets are supported.
+The retained scope is asset checks, source protection, isolated jobs, export and
+baking. Development is paused. See [supported scope and limitations](limitations.md).
+A command's presence does not mean arbitrary production assets are supported.
 
 - `model.build_prop` builds the supported workshop cabinet; `model.build_facade`
   builds the period shop bay. These are specific recipes, not general generators.
 - Rig generation/binding wraps Rigify and native weighting with safeguards.
   Corrective shape creation requires caller-supplied vertex offsets.
 - Review lighting currently accepts only supported owned static mesh/empty
-  sources, up to 500 objects; it does not directly cover the new rigged crew.
+  sources, up to 500 objects; rigged and animated objects are unsupported.
 - Character deformation, reference fidelity, material/lighting quality and
   representative workload evidence remain incomplete. See the [roadmap](roadmap.md).
 - Unreal/Sundown integration is deferred and excluded from Blender completion
   requirements. Earlier adapter/bridge work remains historical evidence.
 
-Framewright performed reference intake, material setup and diagnostics in earlier
-carrier studies. The latest crew authoring and its final checks used custom
-Blender scripts. Do not credit all Blender MCP activity to Framewright or treat
-scene-specific helper files as shipped commands. No tool here currently turns a
-prompt into a finished AAA asset, scene or animation.
+Only operations in this inventory are exposed as Framewright commands. External
+Blender scripts and client integrations are separate from the extension.
